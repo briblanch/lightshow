@@ -1,0 +1,24 @@
+{
+  "name": "lightman",
+  "version": "0.0.0",
+  "description": "lightman ========",
+  "main": "app.js",
+  "dependencies": {
+    "midi": "^0.9.0"
+  },
+  "devDependencies": {
+    "duino": "https://github.com/briblanch/duino/tarball/master",
+    "midi": "^0.9.0",
+    "node-hue-api": "^0.2.3",
+    "sugar": "^1.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-personal:briblanch/lightman.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
