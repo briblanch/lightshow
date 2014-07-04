@@ -4,11 +4,11 @@ var Sequence = require('../Sequence');
 var notes = require('../notes');
 
 var Hue = require('../Hue');
-var duino = require('../arduino');
+// var duino = require('../arduino');
 
 var api = Hue.api;
 var lightState = Hue.lightState;
-var RC = duino.RC;
+// var RC = duino.RC;
 
 var TheScientist = new Song({
 	title: "The Scientist",
@@ -20,7 +20,7 @@ var TheScientist = new Song({
 				notes: [notes.c4, notes.f4, notes.a4],
 				action: function() {
 					api.setGroupLightState(1, this.lights.off)
-					.then(RC.sendOn(duino.channel));
+					.then();
 				},
 				actionRepeats: 1,
 				lights: {
@@ -43,7 +43,7 @@ var TheScientist = new Song({
 				},
 				actionRepeats: 1,
 				lights: {
-					on: lightState.create().hsl(0, 100, 70).on(),
+					on: lightState.create().hsl(0, 100, 70).transition(15).on(),
 				}
 			}),
 			end: new Sequence({
@@ -120,7 +120,7 @@ var TheScientist = new Song({
 				action: function () {
 					api.setLightState(3, this.lights.off);
 					setTimeout(function() {
-						RC.sendOff(duino.channel);
+						// RC.sendOff(duino.channel);
 					},3000);
 				},
 				lights: {
