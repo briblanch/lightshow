@@ -2,21 +2,23 @@ var StatefulObject 	= require('./StatefulObject');
 var extend			= require('node.extend');
 
 var Sequence = function(config) {
-	this._state.noteBuffer = [];
+	StatefulObject.call(this);
 	extend(this, config);
+	this.state.noteBuffer = [];
+
 };
 
-Sequence.prototype = new StatefulObject({
+Sequence.prototype = extend(new StatefulObject(), {
 	notes: [],
 	action: function() {
 		throw "need to overrite action function for Sequence"
 	},
 	onNote: function(note, timestamp) {
 		var deleteIndex = 0;
-		if (!this._state.noteBuffer) {
-			this._state.noteBuffer = [];
+		if (!this.state.noteBuffer) {
+			this.state.noteBuffer = [];
 		}
-		var noteBuffer = this._state.noteBuffer;
+		var noteBuffer = this.state.noteBuffer;
 		var now = timestamp;
 
 		noteBuffer.push({
@@ -37,7 +39,7 @@ Sequence.prototype = new StatefulObject({
 		console.log("Recieved", JSON.stringify(justNotes));
 
 		if (justNotes.contains(this.notes)) {
-			this._state.recognized = true;
+			this.state.recognized = true;
 			console.log("Sequence recognized")
 			if (typeof this.action === 'function') {
 				this.action();

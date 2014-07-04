@@ -1,12 +1,11 @@
 var extend = require('node.extend');
 
-var StatefulObject = function(config) {
-	extend(this, config);
-	this._state = {};
+var StatefulObject = function() {
+	this.state = {};
 };
 
 StatefulObject.prototype.resetState = function() {
-	this._state = {};
+	this.state = {};
 };
 
 

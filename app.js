@@ -37,10 +37,10 @@ if (input.getPortCount()) {
 
 input.on('message', function(deltaTime, message) {
     if (message[0] == 144 && message[2] > 0) {
-        var note = message[1];
+        var note = message[1] + 1;
         if (note == configNote) {
             configMode.init();
-        } else if (configMode._state.started) {
+        } else if (configMode.state.started) {
             configMode.onNote(note);
         } else if (currentSong) {
             // call song
@@ -49,22 +49,24 @@ input.on('message', function(deltaTime, message) {
     }
 });
 
-var configMode = function(){
+var configMode = function() {
+    StatefulObject.call(this);
 };
+
 configMode = extend(new StatefulObject, {
     init: function() {
         this.resetState();
-        this._state.started = true;
-        this._state.noteBuffer = [];
+        this.state.started = true;
+        this.state.noteBuffer = [];
         console.log("Entering config mode");
         return
     },
     onNote: function(note) {
-        this._state.noteBuffer.push(note);
+        this.state.noteBuffer.push(note);
 
-        if (this._state.noteBuffer.length == 3) {
+        if (this.state.noteBuffer.length == 3) {
             for (var i = 0; i < songs.length; i++) {
-                if (songs[i].hook.equals(this._state.noteBuffer)) {
+                if (songs[i].hook.equals(this.state.noteBuffer)) {
                     currentSong = songs[i];
                     console.log("Current song set to", currentSong.title);
                 }
