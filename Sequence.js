@@ -1,5 +1,6 @@
 var StatefulObject 	= require('./StatefulObject');
 var extend			= require('node.extend');
+var log 			= require('./log');
 
 var Sequence = function(config) {
 	StatefulObject.call(this);
@@ -36,11 +37,11 @@ Sequence.prototype = extend(new StatefulObject(), {
 
 		var justNotes = this.justNotes(noteBuffer);
 
-		console.log("Recieved", JSON.stringify(justNotes));
+		log.debug("recieved", JSON.stringify(justNotes));
 
 		if (justNotes.contains(this.notes)) {
 			this.state.recognized = true;
-			console.log("Sequence recognized")
+			log.debug("sequence recognized")
 			if (typeof this.action === 'function') {
 				this.action();
 			}

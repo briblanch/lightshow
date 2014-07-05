@@ -4,6 +4,7 @@ var midi            = require('midi');
 var notes           = require('./notes');
 var _               = require('lodash');
 var TheScientist    = require('./songs/TheScientist');
+var log             = require('./log');
 
 var configNote = notes.c8;
 var currentSong;
@@ -32,12 +33,12 @@ Array.prototype.contains = function(array) {
 
 if (input.getPortCount()) {
     input.openPort(0);
-    console.log("Midi port opened");
+    log.debug("midi port opened");
 }
 
 input.on('message', function(deltaTime, message) {
     if (message[0] == 144 && message[2] > 0) {
-        var note = message[1] + 1;
+        var note = message[1];
         if (note == configNote) {
             configMode.init();
         } else if (configMode.state.started) {
@@ -58,7 +59,7 @@ configMode = extend(new StatefulObject, {
         this.resetState();
         this.state.started = true;
         this.state.noteBuffer = [];
-        console.log("Entering config mode");
+        log.debug("entering config mode");
         return
     },
     onNote: function(note) {
@@ -68,12 +69,12 @@ configMode = extend(new StatefulObject, {
             for (var i = 0; i < songs.length; i++) {
                 if (songs[i].hook.equals(this.state.noteBuffer)) {
                     currentSong = songs[i];
-                    console.log("Current song set to", currentSong.title);
+                    log.debug("current song set to", currentSong.title);
                 }
             }
 
             if (currentSong == null) {
-                console.log("Song hook not recognized");
+                log.debug("song hook not recognized");
             }
 
             this.resetState();

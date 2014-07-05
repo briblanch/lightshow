@@ -1,5 +1,6 @@
-var extend = require('node.extend');
-var StatefulObject = require('./StatefulObject');
+var extend 			= require('node.extend');
+var StatefulObject 	= require('./StatefulObject');
+var log			   	= require('./log');
 
 var Element = function(config) {
 	StatefulObject.call(this);
@@ -22,7 +23,7 @@ Element.prototype = extend(new StatefulObject(), {
 			if (this.state.timesRepeated == this.repeats) {
 				this.complete = true;
 				this.resetState();
-				console.log("Element complete");
+				log.debug("element complete");
 				return;
 			}
 
