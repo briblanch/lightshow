@@ -4,12 +4,14 @@ var midi            = require('midi');
 var notes           = require('./notes');
 var _               = require('lodash');
 var TheScientist    = require('./songs/TheScientist');
+var FightForYourRight = require('./songs/FightForYourRight');
+var PianoMan        = require('./songs/PianoMan')
 var log             = require('./log');
 
 var configNote = notes.c8;
 var currentSong;
 
-var songs = [TheScientist];
+var songs = [TheScientist, FightForYourRight, PianoMan];
 
 var input = new midi.input();
 

@@ -19,7 +19,7 @@ var TheScientist = new Song({
 			start: new Sequence({
 				notes: [notes.c4, notes.f4, notes.a4],
 				action: function() {
-					api.setGroupLightState(1, this.lights.off)
+					api.setGroupLightState(0, this.lights.off)
 					.then(RC.sendOn(duino.channel));
 				},
 				actionRepeats: 1,
