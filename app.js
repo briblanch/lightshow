@@ -1,17 +1,19 @@
-var extend          = require('node.extend');
-var StatefulObject  = require('./StatefulObject');
-var midi            = require('midi');
-var notes           = require('./notes');
-var _               = require('lodash');
-var TheScientist    = require('./songs/TheScientist');
-var FightForYourRight = require('./songs/FightForYourRight');
-var PianoMan        = require('./songs/PianoMan')
-var log             = require('./log');
+var extend              = require('node.extend');
+var StatefulObject      = require('./StatefulObject');
+var midi                = require('midi');
+var notes               = require('./notes');
+var _                   = require('lodash');
+var TheScientist        = require('./songs/TheScientist');
+var FightForYourRight   = require('./songs/FightForYourRight');
+var PianoMan            = require('./songs/PianoMan')
+var Clocks              = require('./songs/Clocks');
+var Mirrors             = require('./songs/Mirrors');
+var log                 = require('./log');
 
 var configNote = notes.c8;
 var currentSong;
 
-var songs = [TheScientist, FightForYourRight, PianoMan];
+var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan];
 
 var input = new midi.input();
 

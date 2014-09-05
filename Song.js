@@ -16,10 +16,11 @@ Song.prototype = extend(new StatefulObject(), {
 			this.state.currentElement = this.elements[this.state.currentElementTitle];
 		} else {
 			if (this.state.currentElement.complete) {
+				this.state.currentElement.resetState();
 				if(this.state.currentElement.nextElement instanceof Array) {
 					if (this.state.currentElement.timesPlayed == undefined) {
 						this.state.currentElement.timesPlayed = 0
-					}else {
+					} else {
 						this.state.currentElement.timesPlayed ++;
 					}
 					//This element will be played again, so reset the complete property

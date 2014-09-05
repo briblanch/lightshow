@@ -1,12 +1,13 @@
 var StatefulObject 	= require('./StatefulObject');
 var extend			= require('node.extend');
 var log 			= require('./log');
+var _               = require('lodash');
 
 var Sequence = function(config) {
 	StatefulObject.call(this);
 	extend(this, config);
 	this.state.noteBuffer = [];
-
+	this.state.playCount = 0;
 };
 
 Sequence.prototype = extend(new StatefulObject(), {
@@ -16,9 +17,11 @@ Sequence.prototype = extend(new StatefulObject(), {
 	},
 	onNote: function(note, timestamp) {
 		var deleteIndex = 0;
+
 		if (!this.state.noteBuffer) {
 			this.state.noteBuffer = [];
 		}
+
 		var noteBuffer = this.state.noteBuffer;
 		var now = timestamp;
 
@@ -39,11 +42,24 @@ Sequence.prototype = extend(new StatefulObject(), {
 
 		log.debug("recieved", JSON.stringify(justNotes));
 
-		if (justNotes.contains(this.notes)) {
-			this.state.recognized = true;
-			log.debug("sequence recognized")
+		var notesFound = false;
+
+		if (this.strict) {	
+			notesFound = justNotes.equals(this.notes);		
+		} else {
+			notesFound = justNotes.contains(this.notes);
+		}
+
+		if (notesFound) {
+			this.state.playCount++;
+
+			if (this.repeats == undefined || this.state.playCount == this.repeats) {
+				this.state.recognized = true;
+				log.debug("sequence recognized");
+			}
+
 			if (typeof this.action === 'function') {
-				this.action();
+				this.action(this.state.playCount);
 			}
 		}
 	},
@@ -55,7 +71,11 @@ Sequence.prototype = extend(new StatefulObject(), {
 
 		return justNotes.sort();
 	},
-	noteThreshold: 150
+	noteThreshold: 150,
+	resetState: function() {
+		this.state = {};
+		this.state.playCount = 0;		
+	}
 });
 
 module.exports = Sequence;

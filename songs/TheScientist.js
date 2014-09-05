@@ -1,14 +1,14 @@
-var Song = require('../Song');
-var Element = require('../Element');
-var Sequence = require('../Sequence');
-var notes = require('../notes');
+var Song 		= require('../Song');
+var Element 	= require('../Element');
+var Sequence 	= require('../Sequence');
+var notes 		= require('../notes');
 
-var Hue = require('../Hue');
-var duino = require('../arduino');
+var Hue 		= require('../Hue');
+var duino 		= require('../arduino');
 
-var api = Hue.api;
-var lightState = Hue.lightState;
-var RC = duino.RC;
+var api 		= Hue.api;
+var lightState 	= Hue.lightState;
+var RC 			= duino.RC;
 
 var TheScientist = new Song({
 	title: "The Scientist",
