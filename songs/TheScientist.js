@@ -47,7 +47,7 @@ var TheScientist = new Song({
 				}
 			}),
 			end: new Sequence({
-				notes: [notes.c4, notes.f4, notes.g4],
+				notes: [notes.c3, notes.f3, notes.g3],
 				action: null
 			}),
 			nextElement: 'chorus'

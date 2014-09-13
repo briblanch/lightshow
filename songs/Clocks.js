@@ -59,7 +59,7 @@ var Clocks = new Song({
 					return;
 				}
 
-				if ((now - this.state.timestamp) < 250) {
+				if ((now - this.state.timestamp) < 200) {
 					return;
 				}
 
@@ -109,7 +109,7 @@ var Clocks = new Song({
 		'riff': new Element({
 			repeats: 2,
 			start: new Sequence({
-				notes: [notes.e5b],
+				notes: [notes.b4b],
 				action: function() {
 					RC.sendOff(duino.channel);
 				},
@@ -151,7 +151,7 @@ var Clocks = new Song({
 			},
 			nextElement: ['verse', 'riff']
 		}),
-		'verse': new Element({			
+		'verse': new Element({
 			start: new Sequence({
 				notes: [notes.e4b],
 				action: function() {
@@ -162,8 +162,8 @@ var Clocks = new Song({
 					on: lightState.create().hsl(250,100,70).on(),
 					off: lightState.create().off()
 				},
-				actionRepeats: 1				
-			}),			
+				actionRepeats: 1
+			}),
 			end: new Sequence({
 				notes: [notes.a3b],
 				action: null,
@@ -177,17 +177,18 @@ var Clocks = new Song({
 				notes: [notes.e4b],
 				action: function() {
 					api.setGroupLightState(1, this.lights.on);
-					RC.sendOn(duino.channel);					
+					RC.sendOn(duino.channel);
 				},
 				lights: {
 					on: lightState.create().hsl(0, 100, 70).on(),
 					off: lightState.create().off()
 				},
-				actionRepeats: 1				
-			}),			
+				actionRepeats: 1
+			}),
 			end: new Sequence({
 				notes: [notes.a3b],
-				action: null,
+				action: function() {
+				},
 				repeats: 3
 			}),
 			repeats: 2,
