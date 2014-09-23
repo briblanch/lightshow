@@ -109,7 +109,7 @@ var Clocks = new Song({
 		'riff': new Element({
 			repeats: 2,
 			start: new Sequence({
-				notes: [notes.e4b],
+				notes: [notes.e5b],
 				action: function() {
 					RC.sendOff(duino.channel);
 				},
