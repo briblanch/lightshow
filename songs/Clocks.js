@@ -15,12 +15,12 @@ var previousLight;
 var flickerTimeStamp;
 
 var flicker = function(lights) {
-	if (previousLight) {
-		api.setLightState(previousLight, lights.off);
-	}
-
 	if (Date.now() - flickerTimeStamp < 150) {
 		return;
+	}
+
+	if (previousLight) {
+		api.setLightState(previousLight, lights.off);
 	}
 
 	flickerTimeStamp = Date.now();
@@ -96,7 +96,7 @@ var Clocks = new Song({
 				},
 				actionRepeats: 1,
 				lights: {
-					off: lightState.create().off(),
+					off: lightState.create().transition(0).off(),
 				}
 			}),
 			end: new Sequence({

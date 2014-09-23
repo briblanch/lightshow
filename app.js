@@ -8,12 +8,13 @@ var FightForYourRight   = require('./songs/FightForYourRight');
 var PianoMan            = require('./songs/PianoMan')
 var Clocks              = require('./songs/Clocks');
 var Mirrors             = require('./songs/Mirrors');
+var Yellow              = require('./songs/Yellow');
 var log                 = require('./log');
 
 var configNote = notes.c8;
 var currentSong;
 
-var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan];
+var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow];
 
 var input = new midi.input();
 
