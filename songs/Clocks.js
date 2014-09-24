@@ -14,6 +14,10 @@ var RC = duino.RC;
 var previousLight;
 var flickerTimeStamp;
 
+var randomInt = function(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 var flicker = function(lights) {
 	if (Date.now() - flickerTimeStamp < 150) {
 		return;
@@ -24,8 +28,9 @@ var flicker = function(lights) {
 	}
 
 	flickerTimeStamp = Date.now();
+	var numLights = randomInt(1, 4);
 
-	var light = Math.floor((Math.random() * 4) + 1);
+	var light = randomInt(1, 4);
 	api.setLightState(light, lights.on);
 	previousLight = light;
 };
@@ -109,7 +114,7 @@ var Clocks = new Song({
 		'riff': new Element({
 			repeats: 2,
 			start: new Sequence({
-				notes: [notes.b4b],
+				notes: [notes.e5b],
 				action: function() {
 					RC.sendOff(duino.channel);
 				},
@@ -137,14 +142,11 @@ var Clocks = new Song({
 			},
 			lights: function (currentSequence) {
 				var lights = {};
-				if (currentSequence == this.start) {
-					lights.on = lightState.create().hsl(0, 100, 70).transition(0).on();
-				} else if (currentSequence == this.end) {
-					lights.on = lightState.create().hsl(250,100,70).transition(0).on();
-				} else {
-					lights.on = lightState.create().hsl(311, 95, 70).transition(0).on();
-				}
+				var randomHue = randomInt(214, 359);
 
+				console.log("Hue: " + randomHue);
+
+				lights.on = lightState.create().transition(0).hsl(randomHue, 100, 100).on();
 				lights.off = lightState.create().transition(0).off();
 
 				return lights;
