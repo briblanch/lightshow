@@ -144,8 +144,6 @@ var Clocks = new Song({
 				var lights = {};
 				var randomHue = randomInt(214, 359);
 
-				console.log("Hue: " + randomHue);
-
 				lights.on = lightState.create().transition(0).hsl(randomHue, 100, 100).on();
 				lights.off = lightState.create().transition(0).off();
 

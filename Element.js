@@ -15,22 +15,27 @@ Element.prototype = extend(new StatefulObject(), {
 			this.state.currentSequence = this.start;
 			this.start.onNote(note, timestamp);
 		} else if (this.middle && !this.state.middleRecognized) {
+			var middleReached = false;
+
 			if (!this.middle[this.middleIndex].state.recognized) {
 				this.middle[this.middleIndex].onNote(note, timestamp);
 				this.state.currentSequence = this.middle;
-			} else {
+				middleReached = true;
+			}
+
+			if (middleReached && this.middle[this.middleIndex].state.recognized) {
 				if (this.middleIndex < this.middle.length - 1) {
-					this.middleIndex++;					
+					this.middleIndex++;
 				} else {
 					this.state.middleRecognized = true;
-				}				
+				}
 			}
 		} else if (!this.end.state.recognized) {
 			this.end.onNote(note, timestamp);
 			this.state.currentSequence = this.end;
 		}
 
-		if (this.catchAll) {
+		if (this.catchAll && this.start.state.recognized) {
 			this.catchAll(this.state.currentSequence);
 		}
 
@@ -50,21 +55,21 @@ Element.prototype = extend(new StatefulObject(), {
 			this.state.timesRepeated++;
 
 			if (this.state.timesRepeated == this.repeats) {
-				this.complete = true;				
+				this.complete = true;
 				log.debug("element complete");
 				return;
 			}
 
-			if (this.start.actionRepeats == this.state.timesRepeated) {				
-				this.start.action = null;
+			if (this.start.actionRepeats == this.state.timesRepeated) {
+				this.start.state.fireAction = false;
 			}
 
 			if (this.start.actionRepeats == this.state.timesRepeated) {
-				this.end.action = null;
+				this.start.state.fireAction = false;
 			}
 		}
 	},
-	resetState: function() {		
+	resetState: function() {
 		this.complete = false;
 		this.state.timesRepeated = 0;
 		this.middleIndex = 0;

@@ -8,6 +8,7 @@ var Sequence = function(config) {
 	extend(this, config);
 	this.state.noteBuffer = [];
 	this.state.playCount = 0;
+	this.state.fireAction = true;
 };
 
 Sequence.prototype = extend(new StatefulObject(), {
@@ -44,8 +45,8 @@ Sequence.prototype = extend(new StatefulObject(), {
 
 		var notesFound = false;
 
-		if (this.strict) {	
-			notesFound = justNotes.equals(this.notes);		
+		if (this.strict) {
+			notesFound = justNotes.equals(this.notes);
 		} else {
 			notesFound = justNotes.contains(this.notes);
 		}
@@ -58,7 +59,7 @@ Sequence.prototype = extend(new StatefulObject(), {
 				log.debug("sequence recognized");
 			}
 
-			if (typeof this.action === 'function') {
+			if (typeof this.action === 'function' && this.state.fireAction) {
 				this.action(this.state.playCount);
 			}
 		}
@@ -74,7 +75,8 @@ Sequence.prototype = extend(new StatefulObject(), {
 	noteThreshold: 150,
 	resetState: function() {
 		this.state = {};
-		this.state.playCount = 0;		
+		this.state.playCount = 0;
+		this.state.fireAction = true;
 	}
 });
 
