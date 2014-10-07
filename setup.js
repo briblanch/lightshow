@@ -26,4 +26,3 @@ var registerUser = function() {
 };
 
 Hue.locateBridges().then(bridgesFound);
-

@@ -38,6 +38,22 @@ Song.prototype = extend(new StatefulObject(), {
 		}
 
 		this.elements[this.state.currentElementTitle].onNote(note, timestamp);
+	},
+	resetState: function() {
+		this.state = {};
+		for (var element in this.elements) {
+			var currentElement = this.elements[element];
+			currentElement.resetState();
+			currentElement.start.resetState();
+
+			if (currentElement.middle) {
+				for (var i = 0; i < currentElement.middle; i++) {
+					currentElement.middle[i].resetState();
+				}
+			}
+
+			currentElement.end.resetState();
+		}
 	}
 });
 

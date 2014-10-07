@@ -45,6 +45,9 @@ input.on('message', function(deltaTime, message) {
     if (message[0] == 144 && message[2] > 0) {
         var note = message[1];
         if (note == configNote) {
+            if (currentSong) {
+                currentSong.resetState();
+            }
             configMode.init();
         } else if (configMode.state.started) {
             configMode.onNote(note);

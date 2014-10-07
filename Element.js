@@ -74,7 +74,6 @@ Element.prototype = extend(new StatefulObject(), {
 		this.state.timesRepeated = 0;
 		this.middleIndex = 0;
 		this.state.middleRecognized = false;
-
 		this.start.actionRepeats = 0;
 	}
 });
