@@ -4,7 +4,7 @@ Lightman
 ### Overview
 
 Lightman is a node.js command line program (for now) that controls the Phillips
-Huelights, radio frequency controlled switches, and professional DMX lights
+Hue lights, radio frequency controlled switches, and professional DMX lights
 (in progress) based off MIDI signals from any keyboard.  
 
 Ususally when someone wants to have programmed lights (whether it be at a show,
@@ -173,7 +173,7 @@ module.exports = TheScientist;
 1. Ability to use professional DMX lighting
 * Extract the core parts of the project to its own npm module
 * General clean up and bug fixes
-* A GUI for building the `Song` objects
+* A GUI for building `Song` objects
 * Ability to start a backing track based off MIDI signals
 * An iOS app that allows for easy selection of songs
 * Ability to create a set list
