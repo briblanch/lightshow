@@ -14,7 +14,6 @@ var Sequence = function(config) {
 Sequence.prototype = extend(new StatefulObject(), {
 	notes: [],
 	action: function() {
-		throw "need to overrite action function for Sequence"
 	},
 	onNote: function(note, timestamp) {
 		var deleteIndex = 0;

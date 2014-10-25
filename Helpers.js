@@ -4,10 +4,15 @@ var api = Hue.api;
 var lightState  = Hue.lightState;
 
 var Helpers = {
-  setLights: function(lightsArray, lightConfig) {
-    for (var i = 0; i < lightsArray.length; i++) {
-        api.setLightState(lightsArray[i], lightConfig);
+  setLights: function(lights, lightConfig) {
+    if (lights.length) {
+        for (var i = 0; i < lights.length; i++) {
+            api.setLightState(lights[i], lightConfig);
+        }
+    } else {
+        api.setLightState(lights, lightConfig)
     }
+
   },
   allHueOff: function(fadeOut) {
     var transition;
@@ -25,14 +30,17 @@ var Helpers = {
     var transition;
 
     if (fadeOut == undefined) {
-      transition = 2;
+        transition = 2;
     } else {
-      transition = fadeOut;
+        transition = fadeOut;
     }
 
-    var off = lightState.create().transition(transition).off();
-    this.setLights(lightsArray, off);
-  }
+        var off = lightState.create().transition(transition).off();
+        this.setLights(lightsArray, off);
+    },
+    randomInt: function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }
 
 module.exports = Helpers;

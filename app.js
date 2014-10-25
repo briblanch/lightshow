@@ -9,12 +9,14 @@ var PianoMan            = require('./songs/PianoMan')
 var Clocks              = require('./songs/Clocks');
 var Mirrors             = require('./songs/Mirrors');
 var Yellow              = require('./songs/Yellow');
+var FixYou              = require('./songs/FixYou');
 var log                 = require('./log');
 
 var configNote = notes.c8;
 var currentSong;
+var currentBackingTrack;
 
-var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow];
+var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow, FixYou];
 
 var input = new midi.input();
 
@@ -47,6 +49,10 @@ input.on('message', function(deltaTime, message) {
         if (note == configNote) {
             if (currentSong) {
                 currentSong.resetState();
+
+                if (currentBackingTrack) {
+                    currentBackingTrack.kill('SIGINT');
+                }
             }
             configMode.init();
         } else if (configMode.state.started) {
@@ -68,7 +74,7 @@ configMode = extend(new StatefulObject, {
         this.state.started = true;
         this.state.noteBuffer = [];
         log.debug("entering config mode");
-        return
+        return;
     },
     onNote: function(note) {
         this.state.noteBuffer.push(note);
@@ -78,6 +84,12 @@ configMode = extend(new StatefulObject, {
                 if (songs[i].hook.equals(this.state.noteBuffer)) {
                     currentSong = songs[i];
                     log.debug("current song set to", currentSong.title);
+
+                    // Starting backing track if one exists
+                    if (currentSong.backingTrack) {
+                        log.debug("Starting backing track for ", currentSong.title);
+                        currentBackingTrack = currentSong.backingTrack();
+                    }
                 }
             }
 
