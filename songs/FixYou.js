@@ -43,9 +43,9 @@ var duration;
 var FixYou = new Song({
     title: "Fix You",
     hook: [notes.g3, notes.b3b, notes.e4b],
-    startingElement: 'end',
+    startingElement: 'intro',
     backingTrack: function() {
-        var command = 'afplay ' + __dirname + '/../backing_tracks/fixyou.mp3'
+        var command = 'afplay ' + __dirname + '/../backing_tracks/fixyou.m4a'
         return exec(command, {async: true});
     },
     elements: {
@@ -54,7 +54,7 @@ var FixYou = new Song({
             start: new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
                 action: function() {
-                    Helpers.allHueOff();
+                    setLights([lights.left, lights.right, lights.desk], lightColors.off);
                     setLights(lights.spotlight, lightColors.yellow);
                     RC.sendOn(duino.channel);
                 },
@@ -231,7 +231,7 @@ var FixYou = new Song({
                     this.timesPlayed++;
                     if (this.timesPlayed == 2) {
                         clearInterval(riffInterval);
-                        setLights([lights.left, lights.right, lights.desk], lightColors.off);
+                        setLights([lights.left, lights.right, lights.desk, lights.spotlight], lightColors.off);
                     }
                 },
                 timesPlayed: 0
