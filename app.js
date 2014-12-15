@@ -1,8 +1,14 @@
+// External Modules
 var extend              = require('node.extend');
-var StatefulObject      = require('./StatefulObject');
 var midi                = require('midi');
-var notes               = require('./notes');
 var _                   = require('lodash');
+
+// Internal Modules
+var StatefulObject      = require('./StatefulObject');
+var notes               = require('./notes');
+var log                 = require('./log');
+
+// Songs
 var TheScientist        = require('./songs/TheScientist');
 var FightForYourRight   = require('./songs/FightForYourRight');
 var PianoMan            = require('./songs/PianoMan')
@@ -10,13 +16,15 @@ var Clocks              = require('./songs/Clocks');
 var Mirrors             = require('./songs/Mirrors');
 var Yellow              = require('./songs/Yellow');
 var FixYou              = require('./songs/FixYou');
-var log                 = require('./log');
+var BlankSpace          = require('./songs/BlankSpace');
 
+// configNotes is the highest note on an 88 keyboard by default
 var configNote = notes.c8;
 var currentSong;
 var currentBackingTrack;
 
-var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow, FixYou];
+var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow,
+            FixYou, BlankSpace];
 
 var input = new midi.input();
 
@@ -38,11 +46,13 @@ Array.prototype.contains = function(array) {
     return _.intersection(this, array).equals(array);
 };
 
+// Opens the first avaliable MIDI port
 if (input.getPortCount()) {
     input.openPort(0);
     log.debug("midi port opened");
 }
 
+// The entry point of the program
 input.on('message', function(deltaTime, message) {
     if (message[0] == 144 && message[2] > 0) {
         var note = message[1];
@@ -74,7 +84,6 @@ configMode = extend(new StatefulObject, {
         this.state.started = true;
         this.state.noteBuffer = [];
         log.debug("entering config mode");
-        return;
     },
     onNote: function(note) {
         this.state.noteBuffer.push(note);
@@ -88,6 +97,7 @@ configMode = extend(new StatefulObject, {
                     // Starting backing track if one exists
                     if (currentSong.backingTrack) {
                         log.debug("Starting backing track for ", currentSong.title);
+                        // Returns the process playing the backing track
                         currentBackingTrack = currentSong.backingTrack();
                     }
                 }

@@ -53,7 +53,7 @@ Sequence.prototype = extend(new StatefulObject(), {
 		if (notesFound) {
 			this.state.playCount++;
 
-			if (this.repeats == undefined || this.state.playCount == this.repeats) {
+			if (!this.repeats || this.state.playCount == this.repeats) {
 				this.state.recognized = true;
 				log.debug("sequence recognized");
 			}

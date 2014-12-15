@@ -1,41 +1,31 @@
-var Hue = require('./Hue');
-var HueConfig = require('./hue.json')
-var api = Hue.api;
+var Hue         = require('./Hue');
+
+var api         = Hue.api;
 var lightState  = Hue.lightState;
 
 var Helpers = {
-  setLights: function(lights, lightConfig) {
-    if (lights.length) {
-        for (var i = 0; i < lights.length; i++) {
-            api.setLightState(lights[i], lightConfig);
+    setLights: function(lights, lightConfig) {
+        if (lights.length) {
+            for (var i = 0; i < lights.length; i++) {
+                api.setLightState(lights[i], lightConfig);
+            }
+        } else {
+                api.setLightState(lights, lightConfig)
         }
-    } else {
-        api.setLightState(lights, lightConfig)
-    }
-
-  },
-  allHueOff: function(fadeOut) {
-    var transition;
-
-    if (fadeOut == undefined) {
-      transition = 2;
-    } else {
-      transition = fadeOut;
-    }
-
-    var off = lightState.create().transition(transition).off();
-    api.setGroupLightState(0, off);
-  },
-  hueOff: function(lightsArray, fadeOut) {
-    var transition;
-
-    if (fadeOut == undefined) {
-        transition = 2;
-    } else {
-        transition = fadeOut;
-    }
+    },
+    allHueOff: function(fadeOut) {
+        var transition = fadeOut != undefined ? fadeOut : 2;
 
         var off = lightState.create().transition(transition).off();
+
+        // Uses group API to turn all lights off
+        api.setGroupLightState(0, off);
+    },
+    hueOff: function(lightsArray, fadeOut) {
+        var transition = fadeOut != undefined ? fadeOut : 2;
+
+        var off = lightState.create().transition(transition).off();
+        // Turn the lights off
         this.setLights(lightsArray, off);
     },
     randomInt: function(min, max) {
