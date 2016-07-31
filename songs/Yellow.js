@@ -8,7 +8,7 @@ var duino       = require('../arduino');
 
 var api         = Hue.api;
 var lightState  = Hue.lightState;
-var RC          = duino.RC;
+var Rf          = duino.Rf;
 
 var timesPlayed = 0;
 
@@ -19,13 +19,13 @@ var setLights = function(lightsArray, lightConfig) {
 };
 
 var lights = {
-    lowWhite: lightState.create().hsl(319, 0, 10).transition(2).on(),
-    highWhite: lightState.create().hsl(319, 0, 30).transition(2).on(),
+    lowWhite: lightState.create().hsl(319, 0, 10).transition(2000).on(),
+    highWhite: lightState.create().hsl(319, 0, 30).transition(2000).on(),
     initYellow: lightState.create().xy(.4472, .4879).brightness(60).transition(0).on(),
-    highYellow: lightState.create().xy(.4472, .4879).brightness(60).transition(2).on(),
-    lowYellow: lightState.create().xy(.4472, .4879).brightness(30).transition(2).on(),
+    highYellow: lightState.create().xy(.4472, .4879).brightness(60).transition(2000).on(),
+    lowYellow: lightState.create().xy(.4472, .4879).brightness(30).transition(2000).on(),
     off: lightState.create().transition(0).off(),
-    blue: lightState.create().transition(0).hsl(250,100,70).on()
+    blue: lightState.create().transition(0).hsb(250,100,70).on()
 }
 
 var isHigh = false;
@@ -40,7 +40,8 @@ var Yellow = new Song({
             start: new Sequence({
                 notes: [notes.b2],
                 action: function() {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                     api.setGroupLightState(0, lights.off);
                     setLights([1, 2, 4], lights.highWhite);
                     isHigh = true;

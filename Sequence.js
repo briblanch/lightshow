@@ -58,8 +58,14 @@ Sequence.prototype = extend(new StatefulObject(), {
 				log.debug("sequence recognized");
 			}
 
-			if (typeof this.action === 'function' && this.state.fireAction) {
-				this.action(this.state.playCount);
+			if (typeof this.action === 'function') {
+				if (this.state.fireAction) {
+					this.action(this.state.playCount);
+				}
+
+				if (this.actionRepeats == this.playCount) {
+					this.state.fireAction = false;
+				}
 			}
 		}
 	},
@@ -75,7 +81,7 @@ Sequence.prototype = extend(new StatefulObject(), {
 	resetState: function() {
 		this.state = {};
 		this.state.playCount = 0;
-		this.state.fireAction = true;
+		this.state.fireAction = true;		
 	}
 });
 

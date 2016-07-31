@@ -4,15 +4,14 @@ var board = new duino.Board({
   	debug: true
 });
 
-var RC = new duino.RC({
+var Rf = new duino.Rf({
   	board: board,
   	pin: "10"
 });
 
 var arduino = {
 	board: board,
-	RC: RC,
-	channel: 'E2'
+	Rf: Rf
 }
 
 module.exports = arduino;

@@ -8,11 +8,12 @@ var duino       = require('../arduino');
 
 var api         = Hue.api;
 var lightState  = Hue.lightState;
-var RC          = duino.RC;
+var Rf          = duino.Rf;
 
 var TheScientist = new Song({
     title: "The Scientist",
     hook: [notes.f4, notes.b4b, notes.c5],
+    startingElement: 'intro',
     elements: {
         'intro': new Element({
             repeats: 2,
@@ -20,7 +21,10 @@ var TheScientist = new Song({
                 notes: [notes.c4, notes.f4, notes.a4],
                 action: function() {
                     api.setGroupLightState(0, this.lights.off)
-                    .then(RC.sendOn(duino.channel));
+                    .then(function() {
+                        Rf.on('1');
+                        Rf.on('2');
+                    });
                 },
                 actionRepeats: 1,
                 lights: {
@@ -43,7 +47,7 @@ var TheScientist = new Song({
                 },
                 actionRepeats: 1,
                 lights: {
-                    on: lightState.create().hsl(0, 100, 70).on(),
+                    on: lightState.create().rgb(255, 0, 0).brightness(70).on(),
                 }
             }),
             end: new Sequence({
@@ -58,9 +62,10 @@ var TheScientist = new Song({
                 notes: [notes.d4, notes.f4, notes.b4b],
                 action: function() {
                     api.setLightState(3, this.lights.on);
+                    api.setLightState(5, this.lights.on);
                 },
                 lights: {
-                    on: lightState.create().hsl(250,100,70).transition(10).on()
+                    on: lightState.create().rgb(0, 21, 225).brightness(80).transition(10000).on()
                 }
             }),
             end: new Sequence({
@@ -82,8 +87,8 @@ var TheScientist = new Song({
                 },
                 actionRepeats: 1,
                 lights: {
-                    on: lightState.create().hsl(0,100, 0).transition(0).on(),
-                    fade: lightState.create().hsl(0,100,70).transition(10).on()
+                    on: lightState.create().hsb(0,100, 0).transition(0).on(),
+                    fade: lightState.create().hsb(0,100,70).transition(10000).on()
                 }
             }),
             end: new Sequence({
@@ -109,22 +114,22 @@ var TheScientist = new Song({
             start: new Sequence({
                 notes: [notes.d4, notes.f4, notes.b4b],
                 action: function() {
+                    Rf.off('1');
+                    Rf.off('2');
+                    api.setLightState(5, this.lights.off);
                     api.setGroupLightState(1, this.lights.off);
                 },
                 lights: {
-                    off: lightState.create().transition(4).off()
+                    off: lightState.create().transition(0).off()
                 }
             }),
             end: new Sequence({
                 notes: [notes.f2],
                 action: function () {
-                    api.setLightState(3, this.lights.off);
-                    setTimeout(function() {
-                        RC.sendOff(duino.channel);
-                    },3000);
+                    api.setLightState(3, this.lights.off);                    
                 },
                 lights: {
-                    off: lightState.create().transition(3).off()
+                    off: lightState.create().transition(3000).off()
                 }
             })
         })

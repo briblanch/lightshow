@@ -9,7 +9,7 @@ var duino       = require('../arduino');
 
 var api         = Hue.api;
 var lightState  = Hue.lightState;
-var RC          = duino.RC;
+var Rf          = duino.Rf;
 
 var lights = require('../hue.json').lights;
 
@@ -80,7 +80,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.d3, notes.f3, notes.a3, notes.c4],
                 action: function() {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                     Helpers.setLights([lights.right, lights.left], lightColors.pink);
                     Helpers.setLights([lights.desk], lightColors.purple);
                     Helpers.setLights([lights.spotlight], lightColors.blue);
@@ -104,7 +105,8 @@ var PianoMan = new Song({
                 action: function() {
                     Helpers.allHueOff(0);
                     Helpers.setLights([lights.spotlight], lightColors.fastBlue);
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.on('2');
                 },
                 actionRepeats: 1
             }),
@@ -126,7 +128,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c3, notes.g3, notes.c4, notes.e4],
                 action: function() {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                     Helpers.hueOff([lights.left, lights.right, lights.spotlight], 1);
                     Helpers.setLights([lights.desk], lightColors.yellow);
                 }
@@ -170,7 +173,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c3, notes.c4],
                 action: function() {
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.off('2');
                     Helpers.setLights([lights.spotlight], lightColors.yellow);
                 }
             }),
@@ -216,7 +220,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.a2],
                 action: function(timesPlayed) {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                     Helpers.hueOff([lights.left, lights.right]);
                     Helpers.setLights([lights.desk], lightColors.purple);
                 }
@@ -256,7 +261,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c3, notes.c4],
                 action: function() {
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.on('2');
                     Helpers.setLights([lights.spotlight], lightColors.yellow);
                 }
             }),
@@ -302,7 +308,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c3, notes.c4],
                 action: function() {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                     Helpers.setLights([lights.right], lightColors.white);
                     Helpers.setLights([lights.left], lightColors.red);
                     Helpers.setLights([lights.spotlight], lightColors.blue);
@@ -324,7 +331,8 @@ var PianoMan = new Song({
                 new Sequence({
                     notes: [notes.c2, notes.c3],
                     action: function() {
-                        RC.sendOn(duino.channel);
+                        Rf.on('1');
+                        Rf.on('2');
                         Helpers.hueOff([lights.desk, lights.left, lights.right]);
                         Helpers.setLights([lights.spotlight], lightColors.blue);
                     }
@@ -360,14 +368,16 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes:[notes.a2],
                 action: function() {
-                    RC.sendOff(duino.channel);
+                    Rf.off('1');
+                    Rf.off('2');
                 }
             }),
             end: new Sequence({
                 notes:[notes.e3],
                 action: function() {
                     Helpers.allHueOff();
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.on('2');
                 }
             }),
             catchAll: function() {
@@ -389,7 +399,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c3, notes.c4],
                 action: function() {
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.on('2');
                     Helpers.hueOff([lights.desk, lights.right, lights.left]);
                     Helpers.setLights([lights.spotlight], lightColors.yellow);
                 }
@@ -422,7 +433,8 @@ var PianoMan = new Song({
             start: new Sequence({
                 notes: [notes.c2, notes.c3],
                 action: function() {
-                    RC.sendOn(duino.channel);
+                    Rf.on('1');
+                    Rf.on('2');
                     api.setGroupLightState(0, lightColors.yellow);
                 }
             }),

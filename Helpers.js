@@ -14,7 +14,7 @@ var Helpers = {
         }
     },
     allHueOff: function(fadeOut) {
-        var transition = fadeOut != undefined ? fadeOut : 2;
+        var transition = fadeOut != undefined ? fadeOut : 2000;
 
         var off = lightState.create().transition(transition).off();
 
@@ -22,7 +22,7 @@ var Helpers = {
         api.setGroupLightState(0, off);
     },
     hueOff: function(lightsArray, fadeOut) {
-        var transition = fadeOut != undefined ? fadeOut : 2;
+        var transition = fadeOut != undefined ? fadeOut : 2000;
 
         var off = lightState.create().transition(transition).off();
         // Turn the lights off

@@ -40,22 +40,36 @@ Element.prototype = extend(new StatefulObject(), {
 		}
 
 		if (this.start.state.recognized && this.end.state.recognized) {
-			this.start.resetState();
+			this.start.state.recognized = false;
 
 			if (this.middle) {
 				this.middleIndex = 0;
 				this.state.middleRecognized = false;
 
 				for(var i = 0; i < this.middle.length; i++) {
-					this.middle[i].resetState();
+					this.middle[i].state.recognized = false;
 				}
 			}
 
-			this.end.resetState();
+			this.end.state.recognized = false;
 			this.state.timesRepeated++;
 
 			if (this.state.timesRepeated == this.repeats) {
+				this.start.resetState();
+
+				if (this.middle) {
+					for(var i = 0; i < this.middle.length; i++) {
+						this.middle[i].resetState();
+					}
+				}
+
+				this.end.resetState();
 				this.complete = true;
+
+				if (this.onEnd) {
+					this.onEnd();
+				}
+
 				log.debug("element complete");
 				return;
 			}

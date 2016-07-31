@@ -1,10 +1,12 @@
 {
-	"ipaddress" : "192.168.0.8",
-	"username"	: "265fc9ec3d2c43af151c31c43f44f747",
+	"ipaddress" : "192.168.1.2",
+	"username"	: "k7VPPcVVpN5UQu81jO7I3Sn95zTEIrWmb2DkWTpz",
 	"lights" : {
 		"left": 1,
 		"right": 2,
 		"spotlight": 3,
-		"desk": 4
+		"desk": 4,
+		"bed": 5,
+		"piano": 6
 	}
 }

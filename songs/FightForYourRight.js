@@ -8,7 +8,7 @@ var duino       = require('../arduino');
 
 var api         = Hue.api;
 var lightState  = Hue.lightState;
-var RC          = duino.RC;
+var Rf          = duino.Rf;
 
 var FightForYourRight = new Song({
     title: "Fight For Your Right",
@@ -20,7 +20,10 @@ var FightForYourRight = new Song({
                 notes: [notes.e4b],
                 action: function() {
                     api.setGroupLightState(1, this.lights.off)
-                    .then(RC.sendOn(duino.channel));
+                    .then(function() {
+                        Rf.on('1');
+                        Rf.on('2');
+                    });
                     api.setLightState(3, this.lights.on);
                 },
                 actionRepeats: 1,
