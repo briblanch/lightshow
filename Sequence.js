@@ -84,8 +84,7 @@ Sequence.prototype = extend(new StatefulObject(), {
 		this.state = {};
 		this.state.noteBuffer = [];
 		this.state.playCount = 0;
-		this.state.recognizedCount = 0;
-		this.state.fireAction = true;
+		this.state.recognizedCount = 0;		
 		this.recognized = false;
 	}
 });

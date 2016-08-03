@@ -36,9 +36,7 @@ Element.prototype = extend(new StatefulObject(), {
 					self.onEnd();
 				}
 
-				for (var i = 0; i < self.sequences.length; i++) {
-					self.sequences[i].resetState();
-				}
+				self.resetSequences();
 
 				log.debug("Element complete");
 				return;
@@ -49,13 +47,19 @@ Element.prototype = extend(new StatefulObject(), {
 
 		if (self.catchAll && elementState.sequenceIndex > 0) {
 			self.catchAll(currentSequence);
-		}		
+		}
+	},
+	resetSequences: function() {
+		for (var i = 0; i < self.sequences.length; i++) {
+			self.sequences[i].resetState();
+		}
 	},
 	resetState: function() {
 		console.log("resetting element state");
 		this.state = {};
 		this.state.timesRepeated = 0;
 		this.state.sequenceIndex = 0;
+		this.resetSequences();
 	}
 });
 
