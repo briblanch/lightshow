@@ -47,14 +47,10 @@ var FixYou = new Song({
     title: "Fix You",
     hook: [notes.g3, notes.b3b, notes.e4b],
     startingElement: 'intro',
-    backingTrack: function() {
-        var command = 'afplay ' + __dirname + '/../backing_tracks/fixyou.m4a'
-        // return exec(command, {async: true});
-    },
     elements: {
         'intro': new Element({
             repeats: 2,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
                 action: function() {
                     setLights([lights.left, lights.right, lights.desk, lights.bed], lightColors.off);
@@ -64,53 +60,49 @@ var FixYou = new Song({
                 },
                 actionRepeats: 1
             }),
-            middle: [
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.d4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.e4b]
-                })
-            ],
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.g3, notes.b3b, notes.d4]
             }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.e4b]
+            }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.d4]
+            })],
             nextElement: 'verse'
         }),
         'verse': new Element({
             repeats: 8,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
             }),
-            middle: [
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.d4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.e4b]
-                })
-            ],
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.g3, notes.b3b, notes.d4]
             }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.e4b]
+            }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.d4]
+            })],
             nextElement: 'chorus'
         }),
         'chorus': new Element({
             repeats: 3,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.a3b],
                 action: function() {
                     setLights([lights.spotlight, lights.bed], lightColors.red);
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b3b]
-            }),
+            })],
             nextElement: ['postchorus', 'preriff', 'end']
         }),
         'postchorus': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e4b],
                 action: function() {
                     Helpers.allHueOff(0);
@@ -120,19 +112,19 @@ var FixYou = new Song({
                     setLights([lights.spotlight], lightColors.fastPink);
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.d4],
                 action: function() {
-                    Helpers.allHueOff(0);
+                    setLights(lights.spotlight, lightColors.off);
                     setLights(lights.bed, lightColors.fastGreen);
                 },
                 actionRepeats: 3
-            }),
+            })],
             nextElement: 'verse2'
         }),
         'verse2': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
                 action: function() {
                     setLights([lights.left, lights.right, lights.desk], lightColors.off);
@@ -142,22 +134,20 @@ var FixYou = new Song({
                 },
                 actionRepeats: 1
             }),
-            middle: [
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.d4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.b3b, notes.e4b]
-                })
-            ],
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.g3, notes.b3b, notes.d4]
             }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.e4b]
+            }),
+            new Sequence({
+                notes: [notes.g3, notes.b3b, notes.d4]
+            })],
             nextElement: 'chorus',
         }),
         'preriff': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e2b],
                 action: function() {
                     Rf.off('1');
@@ -178,17 +168,17 @@ var FixYou = new Song({
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b3b, notes.d4, notes.f4],
                 action: function() {
                     clearInterval(riffInterval);
                 }
-            }),
+            })],
             nextElement: 'riff',
         }),
         'riff': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
                 action: function() {
                     Rf.on('1');
@@ -221,33 +211,29 @@ var FixYou = new Song({
                 },
                 actionRepeats: 1
             }),
-            middle: [
-                new Sequence({
-                    notes: [notes.b3b, notes.d4, notes.f4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.c4, notes.e4b]
-                })
-            ],
-            end: new Sequence({
-                notes: [notes.b3b, notes.d4, notes.f4],
+            new Sequence({
+                notes: [notes.b3b, notes.d4, notes.f4]
             }),
+            new Sequence({
+                notes: [notes.g3, notes.c4, notes.e4b]
+            }),
+            new Sequence({
+                notes: [notes.b3b, notes.d4, notes.f4],
+            })],
             nextElement: 'singAlong'
         }),
         'singAlong': new Element({
             repeats: 2,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.g3, notes.b3b, notes.e4b],
             }),
-            middle: [
-                new Sequence({
-                    notes: [notes.b3b, notes.d4, notes.f4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.c4, notes.e4b]
-                })
-            ],
-            end: new Sequence({
+            new Sequence({
+                notes: [notes.b3b, notes.d4, notes.f4]
+            }),
+            new Sequence({
+                notes: [notes.g3, notes.c4, notes.e4b]
+            }),
+            new Sequence({
                 notes: [notes.b3b, notes.d4, notes.f4],
                 action: function(playCount) {
                     this.timesPlayed++;
@@ -260,18 +246,18 @@ var FixYou = new Song({
                     }
                 },
                 timesPlayed: 0
-            }),
+            })],
             nextElement: 'chorus'
         }),
         'end': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes:[notes.e2b],
                 action: function() {
                     Helpers.allHueOff();
                 }
             }),
-            end: new Sequence({})
+            new Sequence({})]
         })
     }
 });

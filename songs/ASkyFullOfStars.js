@@ -6,8 +6,8 @@ var notes       = require('../notes');
 var log         = require('../log');
 var exec        = require('shelljs').exec;
 
-var lights = require('../hue.json').lights;
-var scenes = require('../scenes');
+var lights      = require('../hue.json').lights;
+var scenes      = require('../scenes');
 
 var ASkyFullOfStars = new Song({
     title: "ASkyFullOfStars",
@@ -20,10 +20,9 @@ var ASkyFullOfStars = new Song({
     elements: {
         'intro': new Element({
             repeats: 6,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b],
                 action: function() {
-                    console.log('action called bitch');
                     scenes.allOff();
                     scenes.strobeBlackLightOn();
                     setTimeout(function() {
@@ -34,14 +33,14 @@ var ASkyFullOfStars = new Song({
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b]
-            }),
+            })],
             nextElement: 'verse'
         }),
         'verse': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b],
                 action: function() {
                     console.log('flash called');
@@ -56,9 +55,9 @@ var ASkyFullOfStars = new Song({
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b],
-            }),
+            })],
             onEnd: function() {
                 // scenes.strobeBlackLightOn();
                 scenes.stopFlicker();
@@ -70,17 +69,17 @@ var ASkyFullOfStars = new Song({
         }),
         'beatDrop': new Element({
             repeats: 3,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b],
                 action: function() {
                     scenes.steadyBlackLightOff();
-                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 180, [305, 130]);
+                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b],
-            }),
+            })],
             onEnd: function() {
                 scenes.stopFlash();
                 scenes.strobeBlackLightOff();
@@ -94,17 +93,17 @@ var ASkyFullOfStars = new Song({
         }),
         'verse2': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b]
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b],
-            }),
+            })],
             nextElement: 'verse2.1'
         }),
         'verse2.1': new Element({
             repeats: 5,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b],
                 action: function() {
                     console.log('flash called');
@@ -119,9 +118,9 @@ var ASkyFullOfStars = new Song({
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b],
-            }),
+            })],
             onEnd: function() {
                 scenes.stopFlicker();
                 scenes.steadyBlackLightOff();
@@ -131,18 +130,18 @@ var ASkyFullOfStars = new Song({
         }),
         'beatDrop2': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e3b],
                 action: function() {
                     scenes.steadyBlackLightOff();
                     scenes.strobeBlackLightOff();
-                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 180, [305, 130]);
+                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.b2b],
-            }),
+            })],
             onEnd: function() {
                 scenes.stopFlash();
                 scenes.strobeBlackLightOff();
@@ -151,7 +150,7 @@ var ASkyFullOfStars = new Song({
         }),
         'outroBridge': new Element({
             repeats: 5,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.b2],
                 action: function() {
                     scenes.steadyBlackLightOff();
@@ -160,12 +159,12 @@ var ASkyFullOfStars = new Song({
                 },
                 actionRepeats: 1
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.e3b],
                 action: function() {
 
                 }
-            }),
+            })],
             onEnd: function() {
                 setTimeout(function() {
                     scenes.stopFlicker();
@@ -180,37 +179,14 @@ var ASkyFullOfStars = new Song({
         }),
         'end': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.e1b],
                 action: function() {
                     console.log('stoping flash');
                     scenes.stopFlash();
                     scenes.allOff();
                 }
-            }),
-            middle: [
-                new Sequence({
-                    notes: [notes.b3b, notes.d4, notes.f4]
-                }),
-                new Sequence({
-                    notes: [notes.g3, notes.c4, notes.e4b]
-                })
-            ],
-            end: new Sequence({
-                notes: [notes.b3b, notes.d4, notes.f4],
-                action: function(playCount) {
-                    this.timesPlayed++;
-                    if (this.timesPlayed == 2) {
-                        cleared = true;
-                        clearInterval(riffInterval);
-                        setLights([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed], lightColors.off);
-                        Rf.off('1');
-                        Rf.off('2');
-                    }
-                },
-                timesPlayed: 0
-            }),
-            nextElement: 'chorus'
+            })]
         })
     }
 });

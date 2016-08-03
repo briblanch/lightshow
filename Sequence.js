@@ -6,8 +6,10 @@ var _               = require('lodash');
 var Sequence = function(config) {
 	StatefulObject.call(this);
 	extend(this, config);
+	this.recognized = false;
 	this.state.noteBuffer = [];
 	this.state.playCount = 0;
+	this.state.recognizedCount = 0;
 	this.state.fireAction = true;
 };
 
@@ -54,18 +56,18 @@ Sequence.prototype = extend(new StatefulObject(), {
 			this.state.playCount++;
 
 			if (!this.repeats || this.state.playCount == this.repeats) {
-				this.state.recognized = true;
-				log.debug("sequence recognized");
-			}
-
-			if (typeof this.action === 'function') {
-				if (this.state.fireAction) {
-					this.action(this.state.playCount);
+				log.debug("Sequence recognized");
+				if (typeof this.action === 'function') {
+					console.log("action bitch")
+					if (!this.actionRepeats || this.actionRepeats > this.state.recognizedCount) {
+						console.log("Firing action");
+						this.action(this.state.playCount);
+					}
 				}
 
-				if (this.actionRepeats == this.playCount) {
-					this.state.fireAction = false;
-				}
+				this.recognized = true;
+				this.state.recognizedCount++;
+				this.state.playCount = 0;
 			}
 		}
 	},
@@ -80,8 +82,11 @@ Sequence.prototype = extend(new StatefulObject(), {
 	noteThreshold: 150,
 	resetState: function() {
 		this.state = {};
+		this.state.noteBuffer = [];
 		this.state.playCount = 0;
-		this.state.fireAction = true;		
+		this.state.recognizedCount = 0;
+		this.state.fireAction = true;
+		this.recognized = false;
 	}
 });
 

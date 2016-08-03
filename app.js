@@ -9,16 +9,16 @@ var notes               = require('./notes');
 var log                 = require('./log');
 
 // Songs
-var TheScientist        = require('./songs/TheScientist');
-var FightForYourRight   = require('./songs/FightForYourRight');
-var PianoMan            = require('./songs/PianoMan')
-var Clocks              = require('./songs/Clocks');
-var Mirrors             = require('./songs/Mirrors');
-var Yellow              = require('./songs/Yellow');
-var FixYou              = require('./songs/FixYou');
-var BlankSpace          = require('./songs/BlankSpace');
-var CantHelpFallingInLove = require('./songs/CantHelpFallingInLove');
-var ASkyFullOfStars     = require('./songs/ASkyFullOfStars');
+var TheScientist            = require('./songs/TheScientist');
+var FightForYourRight       = require('./songs/FightForYourRight');
+var PianoMan                = require('./songs/PianoMan')
+var Clocks                  = require('./songs/Clocks');
+var Mirrors                 = require('./songs/Mirrors');
+var Yellow                  = require('./songs/Yellow');
+var FixYou                  = require('./songs/FixYou');
+var BlankSpace              = require('./songs/BlankSpace');
+var CantHelpFallingInLove   = require('./songs/CantHelpFallingInLove');
+var ASkyFullOfStars         = require('./songs/ASkyFullOfStars');
 
 // configNotes is the highest note on an 88 keyboard by default
 var configNote = notes.c8;
@@ -62,9 +62,6 @@ input.on('message', function(deltaTime, message) {
             if (currentSong) {
                 currentSong.resetState();
 
-                if (currentBackingTrack) {
-                    currentBackingTrack.kill('SIGINT');
-                }
             }
             configMode.init();
         } else if (configMode.state.started) {
@@ -86,6 +83,15 @@ configMode = extend(new StatefulObject, {
         this.state.started = true;
         this.state.noteBuffer = [];
         log.debug("entering config mode");
+
+        if (currentSong) {
+            currentSong.resetState();
+
+            if (currentBackingTrack) {
+                currentBackingTrack.kill('SIGINT');
+                currentBackingTrack = null;
+            }
+        }
     },
     onNote: function(note) {
         this.state.noteBuffer.push(note);

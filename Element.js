@@ -5,90 +5,57 @@ var log			   	= require('./log');
 var Element = function(config) {
 	StatefulObject.call(this);
 	extend(this, config);
-	this.middleIndex = 0;
 	this.state.timesRepeated = 0;
+	this.state.sequenceIndex = 0;
+	this.timesPlayed = 0;
 };
 
 Element.prototype = extend(new StatefulObject(), {
 	onNote: function(note, timestamp) {
-		if (!this.start.state.recognized) {
-			this.state.currentSequence = this.start;
-			this.start.onNote(note, timestamp);
-		} else if (this.middle && !this.state.middleRecognized) {
-			var middleReached = false;
+		var self = this;
+		var elementState = self.state;
+		var currentSequence = self.sequences[elementState.sequenceIndex];
 
-			if (!this.middle[this.middleIndex].state.recognized) {
-				this.middle[this.middleIndex].onNote(note, timestamp);
-				this.state.currentSequence = this.middle;
-				middleReached = true;
+		currentSequence.onNote(note, timestamp);
+
+		if (currentSequence.recognized) {
+			currentSequence.recognized = false;
+
+			if (elementState.sequenceIndex < self.sequences.length - 1) {
+				elementState.sequenceIndex++;
+			} else {
+				console.log("Repeating element");
+				elementState.sequenceIndex = 0;
+				elementState.timesRepeated++;
 			}
 
-			if (middleReached && this.middle[this.middleIndex].state.recognized) {
-				if (this.middleIndex < this.middle.length - 1) {
-					this.middleIndex++;
-				} else {
-					this.state.middleRecognized = true;
-				}
-			}
-		} else if (!this.end.state.recognized) {
-			this.end.onNote(note, timestamp);
-			this.state.currentSequence = this.end;
-		}
+			if (elementState.timesRepeated == self.repeats) {
+				self.complete = true;
 
-		if (this.catchAll && this.start.state.recognized) {
-			this.catchAll(this.state.currentSequence);
-		}
-
-		if (this.start.state.recognized && this.end.state.recognized) {
-			this.start.state.recognized = false;
-
-			if (this.middle) {
-				this.middleIndex = 0;
-				this.state.middleRecognized = false;
-
-				for(var i = 0; i < this.middle.length; i++) {
-					this.middle[i].state.recognized = false;
-				}
-			}
-
-			this.end.state.recognized = false;
-			this.state.timesRepeated++;
-
-			if (this.state.timesRepeated == this.repeats) {
-				this.start.resetState();
-
-				if (this.middle) {
-					for(var i = 0; i < this.middle.length; i++) {
-						this.middle[i].resetState();
-					}
+				if (self.onEnd) {
+					self.onEnd();
 				}
 
-				this.end.resetState();
-				this.complete = true;
-
-				if (this.onEnd) {
-					this.onEnd();
+				for (var i = 0; i < self.sequences.length; i++) {
+					self.sequences[i].resetState();
 				}
 
-				log.debug("element complete");
+				log.debug("Element complete");
 				return;
 			}
 
-			if (this.start.actionRepeats == this.state.timesRepeated) {
-				this.start.state.fireAction = false;
-			}
-
-			if (this.start.actionRepeats == this.state.timesRepeated) {
-				this.start.state.fireAction = false;
-			}
+			currentSequence = self.sequences[elementState.sequenceIndex];
 		}
+
+		if (self.catchAll && elementState.sequenceIndex > 0) {
+			self.catchAll(currentSequence);
+		}		
 	},
 	resetState: function() {
-		this.complete = false;
+		console.log("resetting element state");
+		this.state = {};
 		this.state.timesRepeated = 0;
-		this.middleIndex = 0;
-		this.state.middleRecognized = false;
-		this.start.actionRepeats = 0;
+		this.state.sequenceIndex = 0;
 	}
 });
 

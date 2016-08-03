@@ -42,7 +42,7 @@ var Clocks = new Song({
 	elements: {
 		'preintro': new Element({
 			repeats: 1,
-			start: new Sequence({
+			sequences: [new Sequence({
 				notes: [notes.e4b],
 				action: function() {
 					Rf.off('1');
@@ -54,10 +54,10 @@ var Clocks = new Song({
 					off: lightState.create().off()
 				}
 			}),
-			end: new Sequence({
+			new Sequence({
 				notes: [notes.e5b],
 				action: null
-			}),
+			})],
 			catchAll: function(notes) {
 				var now = Date.now();
 				if (!this.state.timestamp) {
@@ -98,7 +98,7 @@ var Clocks = new Song({
 		}),
 		'preriff': new Element({
 			repeats: 2,
-			start: new Sequence({
+			sequences: [new Sequence({
 				notes: [notes.e5b],
 				action: function() {
 					api.setGroupLightState(0, this.lights.off);
@@ -110,15 +110,15 @@ var Clocks = new Song({
 					off: lightState.create().transition(0).off(),
 				}
 			}),
-			end: new Sequence({
+			new Sequence({
 				notes: [notes.a4b],
 				action: null
-			}),
+			})],
 			nextElement: 'riff'
 		}),
 		'riff': new Element({
 			repeats: 2,
-			start: new Sequence({
+			sequences: [new Sequence({
 				notes: [notes.e5b],
 				action: function() {
 					Rf.off('1');
@@ -130,16 +130,15 @@ var Clocks = new Song({
 					off: lightState.create().off()
 				}
 			}),
-			middle: [
-				new Sequence({
-					notes: [notes.b4b],
-					action: null,
-				})
-			],
-			end: new Sequence({
-				notes: [notes.a4b],
+			new Sequence({
+				notes: [notes.b4b],
 				action: null,
 			}),
+			new Sequence({
+				notes: [notes.a4b],
+				action: null,
+				repeats: 3
+			})],
 			catchAll: function(currentSequence) {
 				flicker(this.lights(currentSequence));
 			},
@@ -155,7 +154,7 @@ var Clocks = new Song({
 			nextElement: ['verse', 'riff']
 		}),
 		'verse': new Element({
-			start: new Sequence({
+			sequences: [new Sequence({
 				notes: [notes.e4b],
 				action: function() {
 					api.setGroupLightState(1, this.lights.off);
@@ -167,15 +166,15 @@ var Clocks = new Song({
 				},
 				actionRepeats: 1
 			}),
-			end: new Sequence({
+			new Sequence({
 				notes: [notes.a3b],
-				action: null,				
-			}),
+				action: null,
+			})],
 			repeats: 4,
 			nextElement: 'chorus'
 		}),
 		'chorus' : new Element({
-			start: new Sequence({
+			sequences: [new Sequence({
 				notes: [notes.e4b],
 				action: function() {
 					api.setGroupLightState(1, this.lights.on);
@@ -188,11 +187,11 @@ var Clocks = new Song({
 				},
 				actionRepeats: 1
 			}),
-			end: new Sequence({
+			new Sequence({
 				notes: [notes.a3b],
 				action: function() {
 				},
-			}),
+			})],
 			repeats: 2,
 			nextElement: 'riff'
 		})

@@ -17,7 +17,7 @@ var TheScientist = new Song({
     elements: {
         'intro': new Element({
             repeats: 2,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.c4, notes.f4, notes.a4],
                 action: function() {
                     api.setGroupLightState(0, this.lights.off)
@@ -31,16 +31,15 @@ var TheScientist = new Song({
                     off: lightState.create().off()
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.c4, notes.f4, notes.g4],
                 action: null
-            }),
+            })],
             nextElement: 'verse',
-
         }),
         'verse': new Element({
             repeats: 4,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.c4, notes.f4, notes.a4],
                 action: function() {
                     api.setLightState(3, this.lights.on)
@@ -50,15 +49,15 @@ var TheScientist = new Song({
                     on: lightState.create().rgb(255, 0, 0).brightness(70).on(),
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.c3, notes.f3, notes.g3],
                 action: null
-            }),
+            })],
             nextElement: 'chorus'
         }),
         'chorus': new Element({
             repeats: 2,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.d4, notes.f4, notes.b4b],
                 action: function() {
                     api.setLightState(3, this.lights.on);
@@ -68,15 +67,15 @@ var TheScientist = new Song({
                     on: lightState.create().rgb(0, 21, 225).brightness(80).transition(10000).on()
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.c4, notes.f4, notes.g4],
                 action: null
-            }),
+            })],
             nextElement: ['verse2', 'bridge'],
         }),
         'verse2': new Element({
             repeats: 6,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.c4, notes.f4, notes.a4],
                 action: function() {
                     var fade = this.lights.fade;
@@ -91,27 +90,27 @@ var TheScientist = new Song({
                     fade: lightState.create().hsb(0,100,70).transition(10000).on()
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.c4, notes.f4, notes.g4],
                 action: null
-            }),
+            })],
             nextElement: 'chorus'
         }),
         'bridge': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.f2, notes.f3],
                 action: null
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.f4, notes.c5],
                 action: null
-            }),
+            })],
             nextElement: 'outro'
         }),
         'outro': new Element({
             repeats: 1,
-            start: new Sequence({
+            sequences: [new Sequence({
                 notes: [notes.d4, notes.f4, notes.b4b],
                 action: function() {
                     Rf.off('1');
@@ -123,15 +122,15 @@ var TheScientist = new Song({
                     off: lightState.create().transition(0).off()
                 }
             }),
-            end: new Sequence({
+            new Sequence({
                 notes: [notes.f2],
                 action: function () {
-                    api.setLightState(3, this.lights.off);                    
+                    api.setLightState(3, this.lights.off);
                 },
                 lights: {
                     off: lightState.create().transition(3000).off()
                 }
-            })
+            })]
         })
     }
 });

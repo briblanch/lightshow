@@ -22,6 +22,9 @@ var h = 0
 var s = 1
 var b = 2
 
+var x = 0;
+var y = 1;
+
 var flickerInterval;
 var flashInterval;
 
@@ -83,17 +86,18 @@ exports.colorLoop = function(lights, transition, duration, colors) {
     transition = transition || 1000;
 
     var _colorLoop = function() {
-        var hue;
+        var hsb;
 
         if (!colors) {
             hue = getRandomInt(0, 359);
         } else {
             var randomIndex = getRandomInt(0, colors.length - 1);
-            hue = colors[randomIndex];
+            hsb = colors[randomIndex];
         }
 
         var randomBrightness = getRandomInt(1, 100);
-        var color = lightState.create().hsb(hue, 100, randomBrightness).transition(transition).on();
+
+        var color = lightState.create().hsb(hsb[h], hsb[s], randomBrightness).transition(transition).on();
         var randomLight = getRandomInt(0, lights.length - 1);
 
         setLightState([lights[randomLight]], color);
@@ -101,7 +105,23 @@ exports.colorLoop = function(lights, transition, duration, colors) {
 
     _colorLoop();
 
-    setInterval(_colorLoop, duration);
+    flashInterval = setInterval(_colorLoop, duration);
+};
+
+exports.colorLoopXy = function(lights, transition, duration, colors) {
+    transition = transition || 1000;
+
+    var _colorLoop = function() {
+        var randomBrightness = getRandomInt(1, 100);
+        var color = lightState.create().xy(colors[x], colors[y]).brightness(randomBrightness).transition(transition).on();
+        var randomLight = getRandomInt(0, lights.length - 1);
+
+        setLightState([lights[randomLight]], color);
+    };
+
+    _colorLoop();
+
+    flashInterval = setInterval(_colorLoop, duration);
 };
 
 exports.flash = function(lights, duration, colors) {
@@ -159,8 +179,9 @@ exports.groupFlash = function(lights, transitionOn, transitionOff, hsb) {
     }, transitionOn + 500);
 };
 
-exports.allOff = function() {
-    api.setGroupLightState(0, lightState.create().off());
+exports.allOff = function(transition) {
+    transition = transition || 500;
+    api.setGroupLightState(0, lightState.create().transition(transition).off());
 };
 
 exports.off = function(light, transition) {
@@ -176,6 +197,14 @@ exports.allOn = function() {
 exports.setLightsOn = function(lights, hsb, transition) {
     transition = transition || 500;
     var color = lightState.create().hsb(hsb[h], hsb[s], hsb[b]).transition(transition).on();
+
+    setLightState(lights, color);
+};
+
+exports.setLightsOnXy = function(lights, colors, brightness, transition) {
+    transition = transition || 500;
+    brightness = brightness || 80;
+    var color = lightState.create().xy(colors[x], colors[y]).brightness(brightness).transition(transition).on();
 
     setLightState(lights, color);
 };
@@ -200,5 +229,10 @@ exports.steadyBlackLightOn = function() {
 };
 
 exports.steadyBlackLightOff = function() {
+    Rf.off('2');
+};
+
+exports.allBlackLightsOff = function() {
+    Rf.off('1');
     Rf.off('2');
 };
