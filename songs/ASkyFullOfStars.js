@@ -73,7 +73,7 @@ var ASkyFullOfStars = new Song({
                 notes: [notes.e3b],
                 action: function() {
                     scenes.steadyBlackLightOff();
-                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
+                    scenes.flashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
                 },
                 actionRepeats: 1
             }),
@@ -108,7 +108,7 @@ var ASkyFullOfStars = new Song({
                 action: function() {
                     console.log('flash called');
                     scenes.steadyBlackLightOff();
-                    scenes.groupFlash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
+                    scenes.groupFlashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
                                       500, 2000, [0, 0, 100]);
 
                     setTimeout(function() {

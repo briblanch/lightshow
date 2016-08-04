@@ -19,6 +19,7 @@ var FixYou                  = require('./songs/FixYou');
 var BlankSpace              = require('./songs/BlankSpace');
 var CantHelpFallingInLove   = require('./songs/CantHelpFallingInLove');
 var ASkyFullOfStars         = require('./songs/ASkyFullOfStars');
+var UsAgainstTheWorld       = require('./songs/UsAgainstTheWorld');
 
 // configNotes is the highest note on an 88 keyboard by default
 var configNote = notes.c8;
@@ -26,7 +27,7 @@ var currentSong;
 var currentBackingTrack;
 
 var songs = [TheScientist, Clocks, Mirrors, FightForYourRight, PianoMan, Yellow,
-            FixYou, BlankSpace, CantHelpFallingInLove, ASkyFullOfStars];
+            FixYou, BlankSpace, CantHelpFallingInLove, ASkyFullOfStars, UsAgainstTheWorld];
 
 var input = new midi.input();
 

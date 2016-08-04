@@ -30,7 +30,7 @@ var CantHelpFallingInLove = new Song({
                 actionRepeats: 1,
             }),
             new Sequence({
-                notes: [notes.d5]                
+                notes: [notes.d5]
             })],
         })
     }

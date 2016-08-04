@@ -50,8 +50,8 @@ Element.prototype = extend(new StatefulObject(), {
 		}
 	},
 	resetSequences: function() {
-		for (var i = 0; i < self.sequences.length; i++) {
-			self.sequences[i].resetState();
+		for (var i = 0; i < this.sequences.length; i++) {
+			this.sequences[i].resetState();
 		}
 	},
 	resetState: function() {

@@ -133,6 +133,49 @@ exports.flash = function(lights, duration, colors) {
         var randomLight = getRandomInt(0, lights.length - 1);
         var selectedLight = lights[randomLight];
 
+        while(selectedLight == previousLight) {
+            var randomLight = getRandomInt(0, lights.length - 1);
+            var selectedLight = lights[randomLight];
+        }
+
+        if (!colors) {
+            hue = getRandomInt(0, 359);
+        } else {
+            var randomIndex = getRandomInt(0, colors.length - 1);
+            hue = colors[randomIndex];
+        }
+
+        var randomBrightness = getRandomInt(1, 100);
+        var color = lightState.create().hsb(hue, 100, 75).transition(0).on();
+
+        if (previousLight) {
+            that.off(previousLight, 1);
+        }
+
+        setLightState([selectedLight], color);
+
+        previousLight = selectedLight;
+    };
+
+    _flash();
+
+    flashInterval = setInterval(_flash, duration);
+};
+
+exports.flashASFOS = function(lights, duration, colors) {
+    var previousLight;
+    var that = this;
+
+    var _flash = function() {
+        var hue;
+        var randomLight = getRandomInt(0, lights.length - 1);
+        var selectedLight = lights[randomLight];
+
+        while(selectedLight == previousLight) {
+            var randomLight = getRandomInt(0, lights.length - 1);
+            var selectedLight = lights[randomLight];
+        }
+
         if (!colors) {
             hue = getRandomInt(0, 359);
         } else {
@@ -141,8 +184,6 @@ exports.flash = function(lights, duration, colors) {
             } else {
                 hue = colors[1];
             }
-            // var randomIndex = getRandomInt(0, colors.length - 1);
-            // hue = colors[randomIndex];
         }
 
         var randomBrightness = getRandomInt(1, 100);
