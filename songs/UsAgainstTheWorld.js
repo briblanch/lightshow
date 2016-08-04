@@ -16,7 +16,7 @@ var scenes = require('../scenes');
 var UsAgainstTheWorld = new Song({
     title: "Us Against The World",
     hook: [notes.c3, notes.g3, notes.c4],
-    startingElement: 'bridge',
+    startingElement: 'intro',
     elements: {
         'intro': new Element({
             repeats: 6,
