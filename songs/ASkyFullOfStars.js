@@ -14,7 +14,7 @@ var ASkyFullOfStars = new Song({
     hook: [notes.b3b, notes.d4b, notes.f4s],
     startingElement: 'intro',
     backingTrack: function() {
-        var command = 'afplay ' + __dirname + '/../backing_tracks/askyfullofstars.mp3'
+        var command = 'mpg123 ' + __dirname + '/../backing_tracks/askyfullofstars.mp3'
         return exec(command, {async: true});
     },
     elements: {
@@ -85,6 +85,7 @@ var ASkyFullOfStars = new Song({
                 scenes.strobeBlackLightOff();
                 setTimeout(function() {
                     scenes.steadyBlackLightOn();
+		    scenes.strobeBlackLightOn();
                     scenes.setLightsOff([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed]);
                     scenes.setLightsOn([lights.piano], [250, 100, 80]);
                 }, 1000);
@@ -108,7 +109,7 @@ var ASkyFullOfStars = new Song({
                 action: function() {
                     console.log('flash called');
                     scenes.steadyBlackLightOff();
-                    scenes.groupFlashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
+                    scenes.groupFlash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
                                       500, 2000, [0, 0, 100]);
 
                     setTimeout(function() {
@@ -135,7 +136,7 @@ var ASkyFullOfStars = new Song({
                 action: function() {
                     scenes.steadyBlackLightOff();
                     scenes.strobeBlackLightOff();
-                    scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
+                    scenes.flashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
                 },
                 actionRepeats: 1
             }),

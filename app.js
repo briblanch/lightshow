@@ -51,7 +51,7 @@ Array.prototype.contains = function(array) {
 
 // Opens the first avaliable MIDI port
 if (input.getPortCount()) {
-    input.openPort(0);
+    input.openPort(1);
     log.debug("midi port opened");
 }
 
