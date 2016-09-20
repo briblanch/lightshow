@@ -89,7 +89,8 @@ exports.colorLoop = function(lights, transition, duration, colors) {
         var hsb;
 
         if (!colors) {
-            hue = getRandomInt(0, 359);
+            hsb = []
+            hsb[0] = getRandomInt(0, 359);
         } else {
             var randomIndex = getRandomInt(0, colors.length - 1);
             hsb = colors[randomIndex];
@@ -97,7 +98,7 @@ exports.colorLoop = function(lights, transition, duration, colors) {
 
         var randomBrightness = getRandomInt(1, 100);
 
-        var color = lightState.create().hsb(hsb[h], hsb[s], randomBrightness).transition(transition).on();
+        var color = lightState.create().hsb(hsb[h], 100, randomBrightness).transition(transition).on();
         var randomLight = getRandomInt(0, lights.length - 1);
 
         setLightState([lights[randomLight]], color);
@@ -276,4 +277,9 @@ exports.steadyBlackLightOff = function() {
 exports.allBlackLightsOff = function() {
     Rf.off('1');
     Rf.off('2');
+};
+
+exports.allBlackLightsOn = function() {
+    Rf.on('1');
+    Rf.on('2');
 };

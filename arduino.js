@@ -1,8 +1,7 @@
 var duino = require('duino');
 
 var board = new duino.Board({
-  	debug: true,
-	device: "ttyACM*"
+  	debug: true
 });
 
 var Rf = new duino.Rf({
