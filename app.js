@@ -17,7 +17,7 @@ let afterEach = () => {
 let midiPort = os.platform() == 'darwin' ? 0 : 1;
 
 const options = {
-  midiPort
+  midiPort,
   onConfig: afterEach,
 };
 

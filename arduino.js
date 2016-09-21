@@ -5,7 +5,7 @@ let duino = require('duino');
 
 const board = new duino.Board({
   debug: true,
-  device: os.platfor == 'darwin' ? null : "ttyACM*"
+  device: os.platform() == 'darwin' ? null : "ttyACM*"
 });
 
 const Rf = new duino.Rf({
