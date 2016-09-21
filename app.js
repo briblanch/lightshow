@@ -1,9 +1,10 @@
 'use strict';
 
-let scenes   = require('./scenes');
+let os       = require('os');
 let lightman = require('lightman');
-let lights   = require('./hue.json').lights;
 
+let scenes   = require('./scenes');
+let lights   = require('./hue.json').lights;
 
 let songsDir = __dirname + '/converted_songs';
 
@@ -13,9 +14,11 @@ let afterEach = () => {
   scenes.allBlackLightsOff();
 };
 
+let midiPort = os.platform() == 'darwin' ? 0 : 1;
+
 const options = {
-  afterEach,
-  onConfig: afterEach
+  midiPort
+  onConfig: afterEach,
 };
 
 let app = lightman.createApp(songsDir, options);

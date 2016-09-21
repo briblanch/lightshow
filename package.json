@@ -17,8 +17,9 @@
   },
   "dependencies": {
     "duino": "https://github.com/briblanch/duino/tarball/new-rf",
-    "lightman": "file:///Users/brianblanchard/workspaces/personal/lightman-lib",
-    "node-hue-api": "^2.2.0"
+    "node-hue-api": "^2.2.0",
+    "lightman": "https://github.com/briblanch/lightman-lib/tarball/master"
+
   },
   "homepage": "https://github.com/briblanch/lightman"
 }

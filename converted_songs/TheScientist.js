@@ -1,3 +1,5 @@
+'use strict';
+
 let notes   = require('lightman').notes;
 let scenes  = require('../scenes');
 let lights  = require('../hue.json').lights;

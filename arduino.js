@@ -1,15 +1,19 @@
-var duino = require('duino');
+'use strict';
 
-var board = new duino.Board({
-  	debug: true
+let os    = require('os');
+let duino = require('duino');
+
+const board = new duino.Board({
+  debug: true,
+  device: os.platfor == 'darwin' ? null : "ttyACM*"
 });
 
-var Rf = new duino.Rf({
-  	board: board,
-  	pin: "10"
+const Rf = new duino.Rf({
+  board: board,
+  pin: "10"
 });
 
-var arduino = {
+const arduino = {
 	board: board,
 	Rf: Rf
 }

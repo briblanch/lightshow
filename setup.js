@@ -1,27 +1,29 @@
-var Hue = require("node-hue-api");
-var HueApi = new Hue.HueApi();
+'use strict';
 
-var hueConfig = {
+let Hue = require("node-hue-api");
+let HueApi = new Hue.HueApi();
+
+let hueConfig = {
 	ipaddress: null,
 	username: null,
 	userDescription: "lightman"
 };
 
-var displayUserResult = function(result) {
-    console.log(JSON.stringify(result));
+let displayUserResult = function(result) {
+  console.log(JSON.stringify(result));
 };
 
-var displayError = function(err) {
-    console.log(err);
+let displayError = function(err) {
+  console.log(err);
 };
 
-var bridgesFound = function(bridges) {
+let bridgesFound = function(bridges) {
 	console.log("Bridges found:", JSON.stringify(bridges));
 	hueConfig.ipaddres = bridges[0].ipaddress;
 	registerUser();
 };
 
-var registerUser = function() {
+let registerUser = function() {
 	HueApi.registerUser(hueConfig.ipaddress, null, hueConfig.username)
 };
 
