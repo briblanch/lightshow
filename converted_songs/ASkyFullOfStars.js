@@ -63,14 +63,16 @@ var ASkyFullOfStars = {
         }
       ],
       onEnd: function() {
-        scenes.stopFlash();
-        scenes.strobeBlackLightOff();
-        setTimeout(() => {
-          scenes.steadyBlackLightOn();
-		      scenes.strobeBlackLightOn();
-          scenes.setLightsOff([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed]);
-          scenes.setLightsOn([lights.piano], [250, 100, 80]);
-        }, 1000);
+        if (timesPlayed == 0) {
+          scenes.stopFlash();
+          scenes.strobeBlackLightOff();
+          setTimeout(() => {
+            scenes.steadyBlackLightOn();
+  		      scenes.strobeBlackLightOn();
+            scenes.setLightsOff([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed]);
+            scenes.setLightsOn([lights.piano], [250, 100, 80]);
+          }, 1000);
+        }
       }
     },
     bridge: {
@@ -90,12 +92,12 @@ var ASkyFullOfStars = {
           notes: [notes.e3b],
         }
       ],
-      onEnd: function() {
+      onEnd: function(timesPlayed) {
         setTimeout(() => {
           scenes.stopFlicker();
           scenes.allOff();
           setTimeout(() => {
-            scenes.flash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 500, [305, 130]);
+            scenes.flashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 700, [305, 130]);
           }, 1000);
         }, 2000);
       },
