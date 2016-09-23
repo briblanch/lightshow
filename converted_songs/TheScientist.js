@@ -8,7 +8,7 @@ let theScientist = {
   name: 'The Scientist', // Name of the song
   hook: [notes.f4, notes.b4b, notes.c5], // The song hook. This is how lightman knows what song to play.
   startingElement: 'verse', // The starting element of the song, defaults to 'intro'
-  backingTrack: __dirname + '/../backing_track/thescientist.mp3',
+  backingTrack: __dirname + '/../backing_tracks/thescientist.mp3',
   elements: { // Object of elements
     verse: {
       repeats: [6, 4], // Number of times this element repeats. Either an int or an array of ints.
