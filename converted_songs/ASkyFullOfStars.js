@@ -5,7 +5,7 @@ let lights  = require('../hue.json').lights;
 let scenes  = require('../scenes');
 
 var ASkyFullOfStars = {
-  title: "ASkyFullOfStars",
+  name: 'A Sky Full Of Stars',
   hook: [notes.b3b, notes.d4b, notes.f4s],
   startingElement: 'verse',
   backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
@@ -17,7 +17,7 @@ var ASkyFullOfStars = {
         {
           notes: [notes.e3b],
           action: function(seqTimesPlayed, elTimesPlayed) {
-            if ((elTimesPlayed == 1 || elTimesPlayed == 2) && seqTimesPlayed == 1) {
+            if ((elTimesPlayed == 0 || elTimesPlayed == 1) && seqTimesPlayed == 0) {
               scenes.allOff();
               scenes.allBlackLightsOn();
               setTimeout(() => {
@@ -25,7 +25,7 @@ var ASkyFullOfStars = {
               }, 500);
             }
 
-            if ((seqTimesPlayed == 7 && elTimesPlayed == 1) || (seqTimesPlayed == 5 && elTimesPlayed == 2)) {
+            if ((seqTimesPlayed == 6 && elTimesPlayed == 0) || (seqTimesPlayed == 4 && elTimesPlayed == 1)) {
               scenes.groupFlash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
                                 800, 2000, [0, 0, 100]);
 
@@ -63,16 +63,7 @@ var ASkyFullOfStars = {
         }
       ],
       onEnd: function() {
-        if (timesPlayed == 0) {
-          scenes.stopFlash();
-          scenes.strobeBlackLightOff();
-          setTimeout(() => {
-            scenes.steadyBlackLightOn();
-  		      scenes.strobeBlackLightOn();
-            scenes.setLightsOff([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed]);
-            scenes.setLightsOn([lights.piano], [250, 100, 80]);
-          }, 1000);
-        }
+        scenes.stopFlash();
       }
     },
     bridge: {
@@ -107,7 +98,7 @@ var ASkyFullOfStars = {
       repeats: 1,
       sequences: [
         {
-          notes: [notes.e1b],
+          notes: [notes.f1s],
           action: function() {
             console.log('stoping flash');
             scenes.stopFlash();

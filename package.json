@@ -16,10 +16,11 @@
     "url": "https://github.com/briblanch/lightman/issues"
   },
   "dependencies": {
+    "color": "^0.11.3",
     "duino": "https://github.com/briblanch/duino/tarball/new-rf",
+    "lightman": "https://github.com/briblanch/lightman-lib/tarball/master",
     "node-hue-api": "^2.2.0",
-    "lightman": "https://github.com/briblanch/lightman-lib/tarball/master"
-
+    "promise": "^7.1.1"
   },
   "homepage": "https://github.com/briblanch/lightman"
 }

@@ -1,5 +1,150 @@
 'use strict';
 
+let Promise = require('promise');
+let Color   = require('color');
+
+let randomInt = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+let scene = {
+  api: null,
+  intervals: [],
+  stop() {
+    for (let interval of intervals) {
+      clearInterval(interval);
+    }
+  },
+  delay(time) {
+    return new Promise(fulfill => {
+      setTimeout(fulfill, time);
+    });
+  },
+  randomHsb() {
+    let hsb = [];
+
+    hsb.push(randomInt(0, 359)); // h
+    hsb.push(randomInt(0, 100)); // s
+    hsb.push(randomInt(0, 100)); // b
+
+    return hsb
+  },
+  hsbForColor(color) {
+    if (color) {
+      return color.hsvArray();
+    } else {
+      return this.randomHsb();
+    }
+  },
+  setLightState(lights = [], lightState = null) {
+    let lightResults = [];
+
+    if (!(lights instanceof Array)) {
+      lights = [lights];
+    }
+
+    for (let light of lights) {
+      lightResults.push(this.api.setLightState(light, lightState));
+    }
+
+    return lightResults
+  },
+  off(lights, transition = 500) {
+    return this.setLightState(lights, lightState.create().transition(transition).off());
+  },
+  on(light, color, transition = 500) {
+    let lightState = lightState.create().transition.on();
+    lightState.hsb.apply(lightState, this.hsbForColor(color));
+
+    return this.setLightState(light, lightState);
+  },
+  redWash(lights = [], brightness = 80, transition = 1000) {
+    let red = lightState.create().hsb(0, 100, brightness).transition(transition).on();
+    return Promise.all(this.setLightState(lights, red))
+  },
+  blueWash(lights = [], brightness = 80, transition = 1000) {
+    let blue = lightState.create().hsb(240, 100, brightness).transition(transition).on();
+    return Promise.all(this.setLightState(lights, blue));
+  },
+  flicker(lights, color, transition = 1000, speed = 1000) {
+    let isHigh = false;
+
+    let lightState = lightState.create().transition(transition).on();
+    lightState.hsb.apply(lightState, color.hsvArray());
+
+    let _flicker = () => {
+      isHigh ? setLightState(lights, low) : setLightState(lights, high);
+      isHigh = !isHigh;
+    };
+
+    _flicker();
+
+    this.intervals.push(setInterval(_flicker, speed));
+  },
+  colorLoop(lights, colors, transition = 1000, speed = 100) {
+
+    let _colorLoop = () => {
+      let hsb = this.hsbForColor(colors[randomInt(0, color.length - 1)]);
+
+      let lightState = lightState.create().transition(transition).on();
+      lightState.hsb.apply(lightState, hsb);
+    };
+
+    _colorLoop();
+
+    this.intervals.push(setInterval(_colorLoop, speed));
+  },
+  flash(lights, colors, speed = 500) {
+    let previousLight;
+
+    let _flash = () => {
+      let randomLight = lights[randomInt(0, lights.length - 1)];
+      let hsb = this.hsbForColor(colors[this.colors.length - 1]);
+
+      while(randomLight == previousLight) {
+        randomLight = lights[randomInt(0, lights.length - 1)];
+      }
+
+      let lightState = lightState.create().hsb().transition(0).on();
+      lightState.hsb.apply(lightState, hsb);
+
+      if (previousLight) {
+        this.off(previousLight, 0);
+      }
+
+      this.setLightState(randomLight, lightState);
+
+      previousLight = selectedLight;
+    };
+
+    _flash();
+
+    this.intervals.push(setInterval(_flash, speed));
+
+
+  },
+  groupFlash(lights, color, timeIn, timeOut, timeOn = 500) {
+    let self = this;
+    let lightStateOn = lightState.create().transition(timeIn).on();
+    lightStateOn.hsb.apply(this.hsbForColor(color));
+
+    return Promise((fulfill, reject) => {
+      self.setLightState(lights, color)
+        .then(() => {
+          return self.delay(timeOn)
+        })
+        .then(() => {
+          return self.off(lights, timeOut);
+        })
+        .then(() => {
+          fulfill();
+        });
+    });
+  }
+},
+
+grou
+
 var hue     = require("node-hue-api");
 var hueInfo = require('./hue.json');
 
@@ -131,7 +276,7 @@ exports.flash = function(lights, duration, colors) {
   var previousLight;
   var that = this;
 
-  var _flash = function() {
+  let _flash = () => {
     var hue;
     var randomLight = getRandomInt(0, lights.length - 1);
     var selectedLight = lights[randomLight];
