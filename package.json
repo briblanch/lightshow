@@ -18,7 +18,7 @@
   "dependencies": {
     "color": "^0.11.3",
     "duino": "https://github.com/briblanch/duino/tarball/new-rf",
-    "lightman": "https://github.com/briblanch/lightman-lib/tarball/master",
+    "lightman": "https://github.com/briblanch/lightman-lib/tarball/backing_tracks",
     "node-hue-api": "^2.2.0",
     "promise": "^7.1.1"
   },
