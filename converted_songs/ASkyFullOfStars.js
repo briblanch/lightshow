@@ -30,7 +30,7 @@ var ASkyFullOfStars = {
                                 800, 2000, [0, 0, 100]);
 
               setTimeout(() => {
-                scenes.flicker([250, 100, 80], [lights.piano, lights.spotlight], 400, 500);
+                scenes.flicker([250, 100, 80], [lights.piano, lights.spotlight], 800, 500);
               }, 3000);
             }
           },
