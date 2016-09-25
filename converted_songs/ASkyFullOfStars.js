@@ -1,13 +1,22 @@
 'use strict';
 
 let notes   = require('lightman').notes;
-let lights  = require('../hue.json').lights;
 let scenes  = require('../scenes');
+
+let colors  = scenes.commonColors;
+let lights  = scenes.lights;
+
+let scene = scenes.createScene();
+
+let map = {};
+map[lights.left] = [colors.pink];
+map[lights.right] = [colors.pink];
+map[lights.desk] = [colors.pink];
 
 var ASkyFullOfStars = {
   name: 'A Sky Full Of Stars',
   hook: [notes.b3b, notes.d4b, notes.f4s],
-  startingElement: 'verse',
+  startingElement: 'end',
   backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
   elements: {
     verse: {
@@ -18,20 +27,14 @@ var ASkyFullOfStars = {
           notes: [notes.e3b],
           action: function(seqTimesPlayed, elTimesPlayed) {
             if ((elTimesPlayed == 0 || elTimesPlayed == 1) && seqTimesPlayed == 0) {
-              scenes.allOff();
-              scenes.allBlackLightsOn();
-              setTimeout(() => {
-                scenes.setLightsOn([lights.piano], [250, 100, 80]);
-              }, 500);
+              scene.allOff()
+                .then(() => scene.blkLightsOn())
+                .then(() => scene.on(lights.piano, colors.blue));
             }
 
             if ((seqTimesPlayed == 6 && elTimesPlayed == 0) || (seqTimesPlayed == 4 && elTimesPlayed == 1)) {
-              scenes.groupFlash([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano],
-                                800, 2000, [0, 0, 100]);
-
-              setTimeout(() => {
-                scenes.flicker([250, 100, 80], [lights.piano, lights.spotlight], 400, 500);
-              }, 3000);
+              scene.groupFlash(lights.allLights, colors.white, 1000, 500, 2000)
+                .then(() => scene.flicker([lights.piano, lights.spotlight], colors.blue, 500, 500));
             }
           },
         },
@@ -40,10 +43,10 @@ var ASkyFullOfStars = {
         }
       ],
       onEnd() {
-        scenes.stopFlicker();
-        scenes.steadyBlackLightOff();
-        scenes.strobeBlackLightOff();
-        scenes.allOff();
+        scene.delay(1000)
+          .then(() => scene.stop())
+          .then(() => scene.blkLightsOff())
+          .then(() => scene.allOff());
       }
     },
     chorus: {
@@ -53,17 +56,17 @@ var ASkyFullOfStars = {
         {
           notes: [notes.e3b],
           action: function() {
-            scenes.steadyBlackLightOff();
-            scenes.flashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 120, [305, 130]);
+            scene.flash(lights.allLights, [colors.pink, colors.green], 120, map);
           },
           actionRepeats: 1
         },
         {
           notes: [notes.b2b],
+          repeats: 4
         }
       ],
       onEnd: function() {
-        scenes.stopFlash();
+        scene.stop();
       }
     },
     bridge: {
@@ -73,39 +76,37 @@ var ASkyFullOfStars = {
           notes: [notes.b2],
           actionRepeats: 1,
           action: function() {
-            scenes.steadyBlackLightOff();
-            scenes.strobeBlackLightOff();
-            scenes.flicker([305, 100, 100], [lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 150, 1000);
+            scene.flicker(lights.allLights, colors.pink, 500, 500);
           },
-
         },
         {
-          notes: [notes.e3b],
+          notes: [notes.f3s],
         }
       ],
       onEnd: function(timesPlayed) {
-        setTimeout(() => {
-          scenes.stopFlicker();
-          scenes.allOff();
-          setTimeout(() => {
-            scenes.flashASFOS([lights.left, lights.right, lights.desk, lights.spotlight, lights.bed, lights.piano], 700, [305, 130]);
-          }, 1000);
-        }, 2000);
+        scene.stop()
+          .then(() => scene.allOff(0))
+          .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 700, map))
       },
       nextElement: 'end'
     },
     end: {
-      repeats: 1,
+      repeats: 15,
       sequences: [
         {
           notes: [notes.f1s],
-          action: function() {
-            console.log('stoping flash');
-            scenes.stopFlash();
-            scenes.allOff();
+          action: function(seqTimesPlayed) {
+            if (seqTimesPlayed == 0) {
+              scene.stop(1000)
+                .then(() => scene.flash(lights.allLights, colors.pink, 120));
+            }
           }
         }
-      ]
+      ],
+      onEnd() {
+        scene.stop()
+          .then(() => scene.allOff(2000))
+      }
     }
   }
 };

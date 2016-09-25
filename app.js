@@ -1,29 +1,29 @@
 'use strict';
 
-let os       = require('os');
-let lightman = require('lightman');
+let os        = require('os');
+let lightman  = require('lightman');
 
-let scenes   = require('./scenes');
-let lights   = require('./hue.json').lights;
+let scenes    = require('./scenes');
 
-let songsDir = __dirname + '/converted_songs';
+let scene     = scenes.createScene();
+let lights    = scenes.lights;
+let colors    = scenes.commonColors;
 
-let afterEach = () => {
-  scenes.allOff();
-  scenes.setLightsOn([lights.left, lights.right, lights.bed, lights.desk], [41, 31, 50]);
-  scenes.allBlackLightsOff();
+let songsDir  = __dirname + '/converted_songs';
+
+let onConfig = () => {
+  scene.allOff()
+    .then(() => scene.on(lights.bulbs, colors.warm))
+    .then(() => scene.blkLightsOff());
 };
 
 let midiPort = os.platform() == 'darwin' ? 0 : 1;
 
 const options = {
   midiPort,
-  onConfig: afterEach,
+  onConfig: onConfig,
 };
 
 let app = lightman.createApp(songsDir, options);
-app.start();
 
-process.on('SIGINT', () => {
-  afterEach();
-});
+app.start();

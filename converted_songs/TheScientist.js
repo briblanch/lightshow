@@ -1,8 +1,13 @@
 'use strict';
 
 let notes   = require('lightman').notes;
-let scenes  = require('../scenes');
-let lights  = require('../hue.json').lights;
+let scenes  = require('../scenes')
+
+let lights  = scenes.lights;
+let Color   = scenes.color;
+let colors  = scenes.commonColors;
+
+let scene   = scenes.createScene();
 
 let theScientist = {
   name: 'The Scientist', // Name of the song
@@ -11,7 +16,7 @@ let theScientist = {
   backingTrack: __dirname + '/../backing_tracks/thescientist.mp3',
   elements: { // Object of elements
     verse: {
-      repeats: [6, 4], // Number of times this element repeats. Either an int or an array of ints.
+      repeats: 6, // Number of times this element repeats. Either an int or an array of ints.
       nextElement: 'chorus', // The element after this one. Either a string or an array of strings.
       sequences: [
         {
@@ -22,18 +27,19 @@ let theScientist = {
               case 0:                             // elTimesPlayed: How many times this sequence has been played through
                 switch(seqTimesPlayed) {
                   case 0:
-                    scenes.allOff(1000);
-                    scenes.allBlackLightsOn();
+                    scene.allOff(1000)
+                      .then(() => scene.blkLightsOn());
                     break;
                   case 2:
-                    scenes.redWash([lights.spotlight], 80, 1500);
+                    scene.redWash(lights.spotlight, 80, 1500);
                     break;
                 }
                 break;
               case 1:
                 switch(seqTimesPlayed) {
                   case 0:
-                    scenes.flicker([0, 100, 100], [lights.spotlight, lights.bed, lights.right, lights.left, lights.desk], 2000, 2000);
+                    scene.blkLightsOn()
+                      .then(() => scene.flicker(lights.allLights, colors.red, 1800, 2000));
                     break;
                 }
                 break;
@@ -55,17 +61,12 @@ let theScientist = {
           action(seqTimesPlayed, elTimesPlayed) {
             switch (elTimesPlayed) {
               case 0:
-                console.log('Turning spot light blue and bed lights on to blue');
-                scenes.blueWash([lights.spotlight, lights.bed], 80, 3000);
+                scene.blueWash([lights.spotlight, lights.bed], 80, 3000);
                 break;
               case 2:
-                console.log('All lights go off expect spotlight');
-                scenes.allBlackLightsOff();
-                scenes.allOff();
-                setTimeout(() => {
-                  scenes.redWash([lights.piano], 100, 1000);
-                }, 500);
-
+                scene.blkLightsOff()
+                  .then(() => scene.allOff(0))
+                  .then(() => scene.redWash(lights.piano, 100, 0));
                 break;
             }
           }
@@ -78,8 +79,8 @@ let theScientist = {
               case 0:
                 switch(seqTimesPlayed) {
                   case 1:
-                    console.log('turn all lights to white');
-                    scenes.setLightsOn([lights.spotlight, lights.bed, lights.desk, lights.left, lights.right], [0, 0, 100], 50)
+                    scene.blkLightsOff().
+                      then(() => scene.on(lights.notPiano, colors.white, 0));
                     break;
                 }
                 break;
@@ -88,10 +89,9 @@ let theScientist = {
         }
       ],
       onEnd(timesPlayed) {
-        scenes.stopFlicker();
-
-        if (timesPlayed == 2) {
-          scenes.allOff();
+        if (timesPlayed == 1) {
+          scene.stop()
+            .then(() => scene.blkLightsOff());
         }
       }
     },
@@ -103,7 +103,7 @@ let theScientist = {
           notes: [notes.c4, notes.f4, notes.a4],
           actionRepeats: 1,
           action() {
-            scenes.colorLoop([lights.left, lights.right, lights.spotlight, lights.desk, lights.bed], 2000, 2000, null);
+            scene.colorLoop(lights.allLights, true, 2000, 2000);
           }
         },
         {
@@ -114,7 +114,7 @@ let theScientist = {
         }
       ],
       onEnd() {
-        scenes.stopFlash();
+        scene.stop();
       }
     }
   }
