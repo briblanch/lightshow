@@ -16,7 +16,7 @@ map[lights.desk] = [colors.pink];
 var ASkyFullOfStars = {
   name: 'A Sky Full Of Stars',
   hook: [notes.b3b, notes.d4b, notes.f4s],
-  startingElement: 'end',
+  startingElement: 'verse',
   backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
   elements: {
     verse: {
