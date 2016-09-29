@@ -1,12 +1,12 @@
 'use strict';
 
 let notes   = require('lightman').notes;
-let scenes  = require('../scenes');
+let Scene   = require('../scene');
 
 let colors  = scenes.commonColors;
 let lights  = scenes.lights;
 
-let scene = scenes.createScene();
+let scene   = Scene.createScene();
 
 let map = {};
 map[lights.left] = [colors.pink];
@@ -18,6 +18,9 @@ var ASkyFullOfStars = {
   hook: [notes.b3b, notes.d4b, notes.f4s],
   startingElement: 'verse',
   backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
+  onCancel() {
+    scene.stop();
+  },
   elements: {
     verse: {
       repeats: [10, 9],

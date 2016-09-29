@@ -1,19 +1,22 @@
 'use strict';
 
 let notes   = require('lightman').notes;
-let scenes  = require('../scenes')
+let Scene   = require('../scene')
 
 let lights  = scenes.lights;
 let Color   = scenes.color;
 let colors  = scenes.commonColors;
 
-let scene   = scenes.createScene();
+let Scene   = scene.createScene();
 
 let theScientist = {
   name: 'The Scientist', // Name of the song
   hook: [notes.f4, notes.b4b, notes.c5], // The song hook. This is how lightman knows what song to play.
   startingElement: 'verse', // The starting element of the song, defaults to 'intro'
   backingTrack: __dirname + '/../backing_tracks/thescientist.mp3',
+  onCancel() {
+    scene.stop()
+  },
   elements: { // Object of elements
     verse: {
       repeats: 6, // Number of times this element repeats. Either an int or an array of ints.

@@ -1,13 +1,13 @@
 'use strict';
 
 let os        = require('os');
-let lightman  = require('lightman');
+let Lightman  = require('lightman');
 
-let scenes    = require('./scenes');
+let Scene     = require('./scene');
 
-let scene     = scenes.createScene();
-let lights    = scenes.lights;
-let colors    = scenes.commonColors;
+let scene     = Scene.createScene();
+let lights    = Scene.lights;
+let colors    = Scene.commonColors;
 
 let songsDir  = __dirname + '/converted_songs';
 
@@ -24,6 +24,6 @@ const options = {
   onConfig: onConfig,
 };
 
-let app = lightman.createApp(songsDir, options);
+let app = Lightman.createApp(songsDir, options);
 
 app.start();
