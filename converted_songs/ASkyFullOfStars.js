@@ -3,8 +3,8 @@
 let notes   = require('lightman').notes;
 let Scene   = require('../scene');
 
-let colors  = scenes.commonColors;
-let lights  = scenes.lights;
+let colors  = Scene.commonColors;
+let lights  = Scene.lights;
 
 let scene   = Scene.createScene();
 

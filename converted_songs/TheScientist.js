@@ -3,11 +3,11 @@
 let notes   = require('lightman').notes;
 let Scene   = require('../scene')
 
-let lights  = scenes.lights;
-let Color   = scenes.color;
-let colors  = scenes.commonColors;
+let lights  = Scene.lights;
+let Color   = Scene.color;
+let colors  = Scene.commonColors;
 
-let Scene   = scene.createScene();
+let Scene   = Scene.createScene();
 
 let theScientist = {
   name: 'The Scientist', // Name of the song
