@@ -1,6 +1,6 @@
 'use strict';
 
-let notes   = require('lightman').notes;
+let notes   = require('@briblanch/lightman').notes;
 let Scene   = require('../scene');
 
 let colors  = Scene.commonColors;

@@ -1,7 +1,7 @@
 'use strict';
 
 let os        = require('os');
-let Lightman  = require('lightman');
+let Lightman  = require('@briblanch/lightman');
 
 let Scene     = require('./scene');
 
