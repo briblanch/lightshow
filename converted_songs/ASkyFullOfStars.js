@@ -57,7 +57,7 @@ var ASkyFullOfStars = {
           notes: [notes.e3b],
           action: function() {
             scene.blkLightsOff()
-              .then(() => scene.allOff(0));
+              .then(() => scene.allOff(0))
               .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 120, map));
             ;
           },

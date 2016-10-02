@@ -4,7 +4,7 @@ let Color       = require('color');
 let Promise     = require('bluebird');
 let Bottleneck  = require('bottleneck');
 
-// let Rf          = require('../arduino').Rf;
+let Rf          = require('../arduino').Rf;
 let hue         = require('./hue/hue');
 
 let api         = hue.api;
