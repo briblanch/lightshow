@@ -46,10 +46,7 @@ var ASkyFullOfStars = {
         }
       ],
       onEnd() {
-        scene.delay(1000)
-          .then(() => scene.stop())
-          .then(() => scene.blkLightsOff())
-          .then(() => scene.allOff());
+        scene.stop();
       }
     },
     chorus: {
@@ -59,7 +56,10 @@ var ASkyFullOfStars = {
         {
           notes: [notes.e3b],
           action: function() {
-            scene.flash(lights.allLights, [colors.pink, colors.green], 120, map);
+            scene.blkLightsOff()
+              .then(() => scene.allOff(0));
+              .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 150, map));
+            ;
           },
           actionRepeats: 1
         },
