@@ -25,7 +25,7 @@ let commonColors = {
   red: Color('#FF0000'),
   blue: Color('#0033FF'),
   green: Color('#00FF00'),
-  yellow: Color('#15FF00'),
+  yellow: Color({r: 255, g: 255, b: 0}),
   pink: Color('#FF00CE'),
   white: Color('#FFFFFF'),
   warm: Color('#E3F4B7')
