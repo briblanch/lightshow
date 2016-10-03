@@ -11,7 +11,7 @@ let scene   = Scene.createScene();
 let FixYou = {
   title: "Fix You",
   hook: [notes.g3, notes.b3b, notes.e4b],
-  startingElement: 'verse',
+  startingElement: 'riff',
   backingTrack: __dirname + '/../backing_tracks/fixyou.mp3',
   elements: {
     verse: {
@@ -44,7 +44,7 @@ let FixYou = {
         {
           notes: [notes.a3b],
           action: function(seqTimesPlayed, elTimesPlayed) {
-            if (elTimesPlayed == 0) {
+            if (elTimesPlayed == 2) {
               scene.allOff(0)
                 .then(() => scene.on([lights.spotlight, lights.bed], colors.red, 1500));
             } else {
@@ -80,7 +80,7 @@ let FixYou = {
       nextElement: 'verse'
     },
     riff: {
-      repeats: 6,
+      repeats: 8,
       nextElement: 'chorus',
       sequences: [
         {
@@ -98,7 +98,7 @@ let FixYou = {
         {
           notes: [notes.d4],
           action(seqTimesPlayed) {
-            if (seqTimesPlayed == 2) {
+            if (seqTimesPlayed == 1) {
               scene.stop()
                 .then(() => scene.allOff());
             }
