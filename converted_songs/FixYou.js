@@ -11,7 +11,7 @@ let scene   = Scene.createScene();
 let FixYou = {
   title: "Fix You",
   hook: [notes.g3, notes.b3b, notes.e4b],
-  startingElement: 'riff',
+  startingElement: 'verse',
   backingTrack: __dirname + '/../backing_tracks/fixyou.mp3',
   elements: {
     verse: {
