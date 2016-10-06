@@ -50,7 +50,7 @@ let theScientist = {
           },
         },
         {
-          notes: [notes.c4, notes.f4, notes.g4]
+          notes: [notes.g3, notes.c4]
         }
       ]
     },
@@ -75,8 +75,8 @@ let theScientist = {
           }
         },
         {
-          notes: [[notes.c4, notes.f4, notes.g4], [notes.c4, notes.e4, notes.g4]],
-          repeats: [1, 5],
+          notes: [[notes.g3, notes.c4], [notes.e4, notes.g4]],
+          repeats: 1,
           action(seqTimesPlayed, elTimesPlayed) {
             switch (elTimesPlayed) {
               case 0:
