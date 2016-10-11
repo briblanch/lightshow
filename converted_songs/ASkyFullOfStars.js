@@ -1,12 +1,10 @@
 'use strict';
 
 let notes   = require('@briblanch/lightman').notes;
-let Scene   = require('../scene');
+let scene   = require('../scene');
 
-let colors  = Scene.commonColors;
-let lights  = Scene.lights;
-
-let scene   = Scene.createScene();
+let colors  = scene.commonColors;
+let lights  = scene.lights;
 
 let map = {};
 map[lights.left] = [colors.pink];
@@ -17,7 +15,7 @@ var ASkyFullOfStars = {
   name: 'A Sky Full Of Stars',
   hook: [notes.b3b, notes.d4b, notes.f4s],
   startingElement: 'verse',
-  backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
+  // backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
   onCancel() {
     scene.stop();
   },
@@ -46,7 +44,7 @@ var ASkyFullOfStars = {
         }
       ],
       onEnd() {
-        scene.stop();
+        scene.stop()
       }
     },
     chorus: {
@@ -58,6 +56,7 @@ var ASkyFullOfStars = {
           action: function() {
             scene.blkLightsOff()
               .then(() => scene.allOff(0))
+              .then(() => scene.blkLightsStrobe(0.95))
               .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 120, map));
             ;
           },
@@ -101,6 +100,8 @@ var ASkyFullOfStars = {
           action: function(seqTimesPlayed) {
             if (seqTimesPlayed == 0) {
               scene.stop(1000)
+                .then(() => scene.allOff(0))
+                .then(() => scene.blkLightsStrobe(0.98))
                 .then(() => scene.flash(lights.allLights, colors.pink, 120));
             }
           }
@@ -108,6 +109,7 @@ var ASkyFullOfStars = {
       ],
       onEnd() {
         scene.stop()
+          .then(() => blkLightsOff())
           .then(() => scene.allOff(2000))
       }
     }

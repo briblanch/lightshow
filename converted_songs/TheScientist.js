@@ -1,13 +1,11 @@
 'use strict';
 
 let notes   = require('@briblanch/lightman').notes;
-let Scene   = require('../scene')
+let scene   = require('../scene')
 
-let lights  = Scene.lights;
-let Color   = Scene.color;
-let colors  = Scene.commonColors;
-
-let scene   = Scene.createScene();
+let lights  = scene.lights;
+let Color   = scene.color;
+let colors  = scene.commonColors;
 
 let theScientist = {
   name: 'The Scientist', // Name of the song

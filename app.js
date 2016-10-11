@@ -3,11 +3,10 @@
 let os        = require('os');
 let Lightman  = require('@briblanch/lightman');
 
-let Scene     = require('./scene');
+let scene     = require('./scene');
 
-let scene     = Scene.createScene();
-let lights    = Scene.lights;
-let colors    = Scene.commonColors;
+let lights    = scene.lights;
+let colors    = scene.commonColors;
 
 let songsDir  = __dirname + '/converted_songs';
 
@@ -22,6 +21,7 @@ let midiPort = os.platform() == 'darwin' ? 0 : 1;
 const options = {
   midiPort,
   onConfig: onConfig,
+  testing: true
 };
 
 let app = Lightman.createApp(songsDir, options);

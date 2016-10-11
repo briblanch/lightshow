@@ -4,35 +4,37 @@ let Color       = require('color');
 let Promise     = require('bluebird');
 let Bottleneck  = require('bottleneck');
 
-let Rf          = require('../arduino').Rf;
+// let Rf          = require('../arduino').Rf;
 let hue         = require('./hue/hue');
+
+let dmx         = require('./dmx');
+
+let washBlackLight   = dmx.washBlackLight;
+let pianoBlackLight  = dmx.pianoBlackLight;
+let blackLights      = dmx.blackLights;
 
 let api         = hue.api;
 let lights      = hue.lights;
 let lightState  = hue.lightState;
 
-Promise.config({cancellation: true});
-
-let limiter = new Bottleneck(1, 2); // Allow unlimited concurent requests firing no less than 2 ms apart
+let limiter = new Bottleneck(1, 2); // Allow one concurent requests firing no less than 2 ms apart
 
 let randomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let intervalPromise;
-
-let commonColors = {
-  red: Color('#FF0000'),
-  blue: Color('#0033FF'),
-  green: Color('#00FF00'),
-  yellow: Color({r: 255, g: 255, b: 0}),
-  pink: Color('#FF00CE'),
-  white: Color('#FFFFFF'),
-  warm: Color('#E3F4B7')
-};
-
 let proto = {
-  api: null,
+  Color: Color,
+  lights: lights,
+  commonColors: {
+    red: Color('#FF0000'),
+    blue: Color('#0033FF'),
+    green: Color('#00FF00'),
+    yellow: Color({r: 255, g: 255, b: 0}),
+    pink: Color('#FF00CE'),
+    white: Color('#FFFFFF'),
+    warm: Color('#E3F4B7')
+  },
   stopLoop: false,
   stop(time = 500) {
     this.stopLoop = true;
@@ -85,6 +87,8 @@ let proto = {
   },
   _setLightState(light, state) {
     return new Promise((resolve, reject) => {
+
+      resolve();
       api.setLightState(light, state)
         .then(resolve, reject);
     });
@@ -223,19 +227,24 @@ let proto = {
   allOff(transition = 500) {
     return this.off(lights.allLights, transition);
   },
-  blkLightsOn() {
+  blkLightsOn(brightness = 1) {
     return new Promise((resolve, reject) => {
-      Rf.on(1),
-      Rf.on(2)
+      blackLights.on(brightness);
       resolve();
     });
   },
   blkLightsOff() {
     return new Promise((resolve, reject) => {
-      Rf.off(1);
-      Rf.off(2);
+      blackLights.off();
       resolve();
     });
+  },
+  blkLightsStrobe(speed = 0.5, brightness = 1) {
+    return new Promise((resolve, reject) => {
+      blackLights.strobe(speed, brightness);
+      resolve();
+    });
+
   }
 }
 
@@ -243,9 +252,4 @@ let scene = function() {
   return Object.assign({}, proto);
 };
 
-module.exports = {
-  createScene: scene,
-  lights,
-  color: Color,
-  commonColors
-};
+module.exports = scene();

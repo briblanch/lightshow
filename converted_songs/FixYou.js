@@ -1,12 +1,10 @@
 'use strict';
 
 let notes   = require('@briblanch/lightman').notes;
-let Scene   = require('../scene');
+let scene   = require('../scene');
 
-let colors  = Scene.commonColors;
-let lights  = Scene.lights;
-
-let scene   = Scene.createScene();
+let colors  = scene.commonColors;
+let lights  = scene.lights;
 
 let FixYou = {
   title: "Fix You",
