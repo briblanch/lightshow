@@ -15,7 +15,7 @@ var ASkyFullOfStars = {
   name: 'A Sky Full Of Stars',
   hook: [notes.b3b, notes.d4b, notes.f4s],
   startingElement: 'verse',
-  // backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
+  backingTrack: __dirname + '/../backing_tracks/askyfullofstars.mp3',
   onCancel() {
     scene.stop();
   },
