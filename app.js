@@ -21,7 +21,6 @@ let midiPort = os.platform() == 'darwin' ? 0 : 1;
 const options = {
   midiPort,
   onConfig: onConfig,
-  testing: true
 };
 
 let app = Lightman.createApp(songsDir, options);

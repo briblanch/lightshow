@@ -22,7 +22,7 @@ let ledMixin = {
     this._brightness = 1 - brightness;
   },
   off() {
-    this._brigtness = 1;
+    this._brightness = 1;
   },
   strobe(speed = 0.5, brightness = 1) {
     this._brightness = 1 - brightness;

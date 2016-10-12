@@ -244,7 +244,6 @@ let proto = {
       blackLights.strobe(speed, brightness);
       resolve();
     });
-
   }
 }
 
