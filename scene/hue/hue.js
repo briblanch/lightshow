@@ -15,7 +15,7 @@ let lights = {
   spotlight: 3,
   desk: 4,
   bed: 5,
-  piano: 6
+  piano: 7
 };
 
 lights.allLights = Object.keys(lights).map((key) => {
