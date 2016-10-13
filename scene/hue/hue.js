@@ -10,12 +10,12 @@ let hostname    = hueConfig.ipaddress,
     api         = new HueApi(hostname, username);
 
 let lights = {
-  left: 1,
-  right: 2,
-  spotlight: 3,
-  desk: 4,
-  bed: 5,
-  piano: 7
+  left: 2,
+  right: 4,
+  spotlight: 1,
+  desk: 5,
+  bed: 3,
+  piano: 6
 };
 
 lights.allLights = Object.keys(lights).map((key) => {
