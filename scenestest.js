@@ -1,4 +1,5 @@
 let scene = require('./scene');
+let dmx = require('./scene/dmx/');
 
 let lights = scene.lights;
 let colors = scene.commonColors;
@@ -14,3 +15,4 @@ map[lights.desk] = [colors.pink];
 //   .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 120, map))
 
 scene.blkLightsOn();
+dmx.washFx.bothLasers(0, 127);

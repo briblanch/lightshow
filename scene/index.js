@@ -4,7 +4,6 @@ let Color       = require('color');
 let Promise     = require('bluebird');
 let Bottleneck  = require('bottleneck');
 
-// let Rf          = require('../arduino').Rf;
 let hue         = require('./hue/hue');
 
 let dmx         = require('./dmx');
@@ -12,6 +11,7 @@ let dmx         = require('./dmx');
 let washBlackLight   = dmx.washBlackLight;
 let pianoBlackLight  = dmx.pianoBlackLight;
 let blackLights      = dmx.blackLights;
+let washFx           = dmx.washFx;
 
 let api         = hue.api;
 let lights      = hue.lights;

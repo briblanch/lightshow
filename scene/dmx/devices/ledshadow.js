@@ -3,15 +3,15 @@ let output      = require('../internals/output');
 
 let param       = fivetwelve.param;
 
-function params(baseChannel) {
+function params() {
   const brightnessOptions = {
     rangeStart: 1, rangeEnd: 255
   };
 
   return {
-    _mode: new param.RangeParam(baseChannel),
-    _strobe: new param.RangeParam(baseChannel + 1),
-    _brightness: new param.RangeParam(baseChannel + 2, brightnessOptions)
+    _mode: new param.RangeParam(1),
+    _strobe: new param.RangeParam(2),
+    _brightness: new param.RangeParam(3, brightnessOptions)
   };
 };
 
