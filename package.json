@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-prod": "LOG_LEVEL=\"error\" sudo node app.js",
+    "start-debug": "sudo node app.js"
   },
   "repository": {
     "type": "git",
@@ -20,10 +21,11 @@
     "bluebird": "3.4.6",
     "bottleneck": "1.12.0",
     "color": "0.11.3",
-    "duino": "https://github.com/briblanch/duino/tarball/new-rf",
     "fivetwelve": "^0.4.0",
     "ftdi": "git+https://github.com/briblanch/node-ftdi.git",
-    "node-hue-api": "2.2.0"
+    "johnny-five": "^0.10.3",
+    "node-hue-api": "2.2.0",
+    "tree-kill": "^1.1.0"
   },
   "homepage": "https://github.com/briblanch/lightshow"
 }

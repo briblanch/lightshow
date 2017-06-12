@@ -1,11 +1,13 @@
 'use strict';
 
+let cp = require('child_process');
+let smokeProcess = cp.fork(`${__dirname}/smoke/index.js`);
+
 let Color       = require('color');
 let Promise     = require('bluebird');
 let Bottleneck  = require('bottleneck');
 
 let hue         = require('./hue/hue');
-
 let dmx         = require('./dmx');
 
 let washBlackLight   = dmx.washBlackLight;
@@ -24,8 +26,9 @@ let randomInt = function(min, max) {
 }
 
 let proto = {
-  Color: Color,
-  lights: lights,
+  Color,
+  lights,
+  washFx,
   commonColors: {
     red: Color('#FF0000'),
     blue: Color('#0033FF'),
@@ -33,7 +36,8 @@ let proto = {
     yellow: Color({r: 255, g: 255, b: 0}),
     pink: Color('#FF00CE'),
     white: Color('#FFFFFF'),
-    warm: Color('#E3F4B7')
+    warm: Color('#E3F4B7'),
+    purple: Color('#800080'),
   },
   stopLoop: false,
   stop(time = 500) {
@@ -221,6 +225,21 @@ let proto = {
       .then(() => this.delay(timeOn))
       .then(() => this.off(lights, timeOut));
   },
+  alternate(group1, group2, color, speed = 500) {
+    let isGroup1 = true;
+
+    let _alternate = () => {
+      let offGroup = isGroup1 ? group1 : group2;
+      let onGroup = isGroup1 ? group2 : group1;
+      isGroup1 = !isGroup1;
+      this.off(offGroup, 0)
+        .then(() => this.on(onGroup, color, 0))
+
+      this.repeat(_alternate, speed);
+    };
+
+    _alternate();
+  },
   allOn(transition = 500) {
     return this.on(lights.allLights, transition);
   },
@@ -239,11 +258,83 @@ let proto = {
       resolve();
     });
   },
+  pianoBlkLightOn() {
+    return new Promise((resolve, reject) => {
+      pianoBlackLight.on();
+      resolve();
+    });
+  },
+  pianoBlkLightOff() {
+    return new Promise((resolve, reject) => {
+      pianoBlackLight.off();
+      resolve();
+    });
+  },
+  pianoBlkLightStrobe(speed = 0.5, brightness = 1) {
+    return new Promise((resolve, reject) => {
+      pianoBlackLight.strobe(speed, brightness);
+      resolve();
+    });
+  },
+  washBlkLightOn() {
+    return new Promise((resolve, reject) => {
+      washBlackLight.on();
+      resolve();
+    });
+  },
+  washBlkLightOff() {
+    return new Promise((resolve, reject) => {
+      washBlackLight.off();
+      resolve();
+    });
+  },
+  washBlkLightStrobe(speed = 0.5, brightness = 1) {
+    return new Promise((resolve, reject) => {
+      washBlackLight.strobe(speed, brightness);
+      resolve();
+    });
+  },
   blkLightsStrobe(speed = 0.5, brightness = 1) {
     return new Promise((resolve, reject) => {
       blackLights.strobe(speed, brightness);
       resolve();
     });
+  },
+  redLaserOn(strobe = 0, rotate = 0) {
+    return new Promise((resolve, reject) => {
+        washFx.redLaserOn(strobe, rotate);
+        resolve();
+    });
+  },
+  greenLaserOn(strobe = 0, rotate = 0) {
+    return new Promise((resolve, reject) => {
+      washFx.greenLaserOn(strobe, rotate);
+      resolve();
+    });
+  },
+  bothLasersOn(strobe, rotate) {
+    return new Promise((resolve, reject) => {
+      washFx.bothLasers(strobe, rotate);
+      resolve();
+    });
+  },
+  washFxOff() {
+    return new Promise((resolve, reject) => {
+      washFx.off();
+      resolve();
+    });
+  },
+  strobeOn(value = 200) {
+    return new Promise((resolve, reject) => {
+      washFx.strobeOn(value);
+      resolve();
+    });
+  },
+  smokeOn() {
+    smokeProcess.send('on');
+  },
+  smokeOff() {
+    smokeProcess.send('off');
   }
 }
 

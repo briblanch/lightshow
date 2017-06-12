@@ -11,7 +11,7 @@ let theScientist = {
   name: 'The Scientist', // Name of the song
   hook: [notes.f4, notes.b4b, notes.c5], // The song hook. This is how lightman knows what song to play.
   startingElement: 'verse', // The starting element of the song, defaults to 'intro'
-  backingTrack: __dirname + '/../backing_tracks/thescientist.mp3',
+  // backingTrack: __dirname + '/../backing_tracks/thescientist.mp3',
   onCancel() {
     scene.stop()
   },
@@ -39,6 +39,7 @@ let theScientist = {
               case 1:
                 switch(seqTimesPlayed) {
                   case 0:
+                    scene.washFx.derbyOn(20, 0, 50);
                     scene.blkLightsOn()
                       .then(() => scene.flicker(lights.allLights, colors.red, 1800, 2000));
                     break;
@@ -50,7 +51,10 @@ let theScientist = {
         {
           notes: [notes.g3, notes.c4]
         }
-      ]
+      ],
+      onEnd() {
+        scene.stop();
+      }
     },
     chorus: {
       repeats: 2,
@@ -64,9 +68,16 @@ let theScientist = {
               case 0:
                 scene.blueWash([lights.spotlight, lights.bed], 80, 3000);
                 break;
+              case 1:
+                scene.blkLightsOn()
+                  .then(() => scene.flicker(lights.allLights, colors.blue, 1800, 2000));
+                scene.washFx.derbyOn(10, 0, 50);
+                break;
               case 2:
+                scene.washFx.derbyOn(30, 0, 0);
                 scene.blkLightsOff()
                   .then(() => scene.allOff(0))
+                  .then(() => scene.delay(300))
                   .then(() => scene.redWash(lights.piano, 100, 0));
                 break;
             }
@@ -104,7 +115,8 @@ let theScientist = {
           notes: [notes.c4, notes.f4, notes.a4],
           actionRepeats: 1,
           action() {
-            scene.colorLoop(lights.allLights, true, 2000, 2000);
+            scene.washFx.derbyOn(160, 0, 50);
+            scene.colorLoop(lights.allLights, true, [colors.red, colors.pink, colors.blue], 2000, 2000);
           }
         },
         {

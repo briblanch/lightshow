@@ -15,4 +15,4 @@ map[lights.desk] = [colors.pink];
 //   .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 120, map))
 
 scene.blkLightsOn();
-dmx.washFx.bothLasers(0, 127);
+scene.washFx.derbyOn(80, 0, 80);

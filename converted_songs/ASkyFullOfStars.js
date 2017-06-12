@@ -5,11 +5,15 @@ let scene   = require('../scene');
 
 let colors  = scene.commonColors;
 let lights  = scene.lights;
+let washFx  = scene.washFx;
 
 let map = {};
 map[lights.left] = [colors.pink];
 map[lights.right] = [colors.pink];
 map[lights.desk] = [colors.pink];
+map[lights.spotlight] = [colors.green];
+map[lights.bed] = [colors.green];
+map[lights.piano] = [colors.green];
 
 var ASkyFullOfStars = {
   name: 'A Sky Full Of Stars',
@@ -28,13 +32,20 @@ var ASkyFullOfStars = {
           notes: [notes.e3b],
           action: function(seqTimesPlayed, elTimesPlayed) {
             if ((elTimesPlayed == 0 || elTimesPlayed == 1) && seqTimesPlayed == 0) {
+              if (elTimesPlayed == 1) {
+                scene.washFx.greenLaserOn(0, 0);
+              }
+
               scene.allOff()
                 .then(() => scene.blkLightsOn())
                 .then(() => scene.on(lights.piano, colors.blue));
             }
 
             if ((seqTimesPlayed == 6 && elTimesPlayed == 0) || (seqTimesPlayed == 4 && elTimesPlayed == 1)) {
-              scene.groupFlash(lights.allLights, colors.white, 1000, 500, 2000)
+              scene.strobeOn()
+                .then(() => scene.groupFlash(lights.allLights, colors.white, 1000, 500, 2000))
+                .then(() => scene.washFxOff())
+                .then(() => {scene.washFx.derbyOn(80, 0, 80)})
                 .then(() => scene.flicker([lights.piano, lights.spotlight], colors.blue, 500, 500));
             }
           },
@@ -56,7 +67,9 @@ var ASkyFullOfStars = {
           action: function() {
             scene.blkLightsOff()
               .then(() => scene.allOff(0))
+              .then(() => {scene.washFx.derbyOff()})
               .then(() => scene.blkLightsStrobe(0.95))
+              .then(() => scene.greenLaserOn(0, 127))
               .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 120, map));
             ;
           },
@@ -79,6 +92,7 @@ var ASkyFullOfStars = {
           actionRepeats: 1,
           action: function() {
             scene.flicker(lights.allLights, colors.pink, 500, 500);
+            scene.blkLightsOn();
           },
         },
         {
@@ -88,6 +102,7 @@ var ASkyFullOfStars = {
       onEnd: function(timesPlayed) {
         scene.stop()
           .then(() => scene.allOff(0))
+          .then(() => scene.washFx.greenLaserOn(0, 0))
           .then(() => scene.flash(lights.allLights, [colors.pink, colors.green], 700, map))
       },
       nextElement: 'end'
@@ -109,7 +124,7 @@ var ASkyFullOfStars = {
       ],
       onEnd() {
         scene.stop()
-          .then(() => blkLightsOff())
+          .then(() => scene.blkLightsOff())
           .then(() => scene.allOff(2000))
       }
     }

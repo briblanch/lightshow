@@ -31,7 +31,7 @@ let ledMixin = {
 };
 
 let createLed = function(channel) {
-  let device = new fivetwelve.DmxDevice(channel, params(channel));
+  let device = new fivetwelve.DmxDevice(channel, params());
   device.setOutput(output);
 
   return device;

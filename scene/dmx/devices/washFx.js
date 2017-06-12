@@ -36,7 +36,7 @@ function params() {
     _wash6: new param.RangeParam(8, fullRangeOptions),
     _wash7: new param.RangeParam(9, fullRangeOptions),
     _wash8: new param.RangeParam(10, fullRangeOptions),
-    _washStrobe: new param.RangeParam(11),
+    washStrobe: new param.RangeParam(11),
     _derbyColor: new param.RangeParam(12, fullRangeOptions),
     _derbyStrobe: new param.RangeParam(13, fullRangeOptions),
     _derbySpeed: new param.RangeParam(14, fullRangeOptions),
@@ -65,12 +65,52 @@ let washFxMixin = {
     this.laserStrobeRotate(strobe, rotate);
   },
   bothLasers(strobe = 0, rotate = 0) {
-    this._lasers = 'redGreenStrobe';
+    this._lasers = 'bothStrobe';
     this.laserStrobeRotate(strobe, rotate);
   },
   laserStrobeRotate(strobe = 0, rotate = 0) {
     this._laserStrobeSpeed = strobe;
     this._laserRotateSpeed = rotate;
+  },
+  off() {
+    this._mode = 'off';
+    this._lasers = 'off';
+    this.washesOff();
+    this.setWashValue(0);
+    this.derbyOff();
+    this.strobeOff();
+  },
+  washesOff() {
+    this.setWashValue(0);
+  },
+  washesOn(value = 0) {
+    this.setWashValue(value);
+  },
+  strobeWash(speed = 0) {
+    this.washStrobe = speed;
+  },
+  setWashValue(value = 0) {
+    for (var key in this) {
+      if (key.includes('_wash')) {
+        this.params[key].setValue(this, value);
+      }
+    }
+  },
+  strobeOn(value = 200) {
+    this._strobe = value;
+  },
+  strobeOff() {
+    this._strobe = 0;
+  },
+  derbyOn(color = 0, strobe = 0, speed = 0) {
+    this._derbyColor = color;
+    this._derbyStrobe = strobe;
+    this._derbySpeed = speed;
+  },
+  derbyOff() {
+    this._derbyColor = 0;
+    this._derbyStrobe = 0;
+    this._derbySpeed = 0;
   }
 };
 

@@ -20,7 +20,6 @@ let driver = {
     return new Promise((resolve, reject) => {
       ftdi.find((err, devices) => {
         if (!err && devices.length > 0) {
-          console.log(devices[0]);
           this.device = new ftdi.FtdiDevice(devices[0]);
           this.device.open(settings, resolve);
         } else {
