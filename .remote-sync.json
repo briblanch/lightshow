@@ -1,0 +1,18 @@
+{
+  "transport": "scp",
+  "hostname": "192.168.86.33",
+  "port": "123",
+  "username": "pi",
+  "target": "/home/pi/workspaces/lightshow",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**",
+    "node_modules/**",
+    ".DS_Store"
+  ],
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "watch": [],
+  "password": "raspberry"
+}
